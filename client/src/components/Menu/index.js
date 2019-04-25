@@ -11,7 +11,7 @@ function Menu(props) {
       >
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
-            Web Dev Depot
+            <img src="/images/brand_logo.png" alt="logo" />
           </a>
           <a
             role="button"
@@ -26,26 +26,23 @@ function Menu(props) {
           </a>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item">Home</a>
-
-            <a className="navbar-item">Documentation</a>
-
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">More</a>
-
-              <div className="navbar-dropdown">
-                <a className="navbar-item">About</a>
-                <a className="navbar-item">Jobs</a>
-                <a className="navbar-item">Contact</a>
-                <hr className="navbar-divider" />
-                <a className="navbar-item">Report an issue</a>
-              </div>
-            </div>
+            <a className="navbar-item">Admin</a>
           </div>
 
           <div className="navbar-end">
+            <a class="navbar-item">
+              <span class="icon">
+                <i class="fas fa-comment" style={{color: "white"}} />
+              </span>
+            </a>
+            <a class="navbar-item">
+              <span class="icon">
+                <i class="fas fa-star" style={{color: "yellow"}} />
+              </span>
+            </a>
+
             <div className="navbar-item">
               <div className="buttons">
                 <a className="button is-primary">
@@ -57,8 +54,9 @@ function Menu(props) {
           </div>
         </div>
       </nav>
-      <div className="menuContainer">
-        <div class="field">
+
+      <div className="sidebar">
+        <div class="field search-box">
           <p class="control has-icons-right">
             <input className="input" type="text" placeholder="Search" />
             <span className="icon is-small is-right">
@@ -66,70 +64,236 @@ function Menu(props) {
             </span>
           </p>
         </div>
-        <aside className="menu">
-          <p className="menu-label">General</p>
-          <ul className="menu-list">
-            <li>
-              <a>Dashboard</a>
-            </li>
-            <li>
-              <a>Customers</a>
-            </li>
-          </ul>
-          <p className="menu-label">Administration</p>
-          <ul className="menu-list">
-            <li>
-              <a>Team Settings</a>
-            </li>
-            <li>
-              <a className="is-active">Manage Your Team</a>
-              <ul>
-                <li>
-                  <a>Members</a>
-                </li>
-                <li>
-                  <a>Plugins</a>
-                </li>
-                <li>
-                  <a>Add a member</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Invitations</a>
-            </li>
-            <li>
-              <a>Cloud Storage Environment Settings</a>
-            </li>
-            <li>
-              <a>Authentication</a>
-            </li>
-          </ul>
-          <p className="menu-label">Transactions</p>
-          <ul className="menu-list">
-            <li>
-              <a>Payments</a>
-            </li>
-            <li>
-              <a>Transfers</a>
-            </li>
-            <li>
-              <a>Balance</a>
-            </li>
-            <li>
-              <a>Payments</a>
-            </li>
-            <li>
-              <a>Transfers</a>
-            </li>
-            <li>
-              <a>Balance</a>
-            </li>
-          </ul>
-        </aside>
+        <div className="menu-container">
+          <aside className="menu">
+            <p className="menu-label">
+              <a>Front End</a>
+            </p>
+            <ul className="menu-list">
+              <li>
+                <a className="menu-parent">HTML</a>
+              </li>
+              <li>
+                <a className="menu-parent">CSS</a>
+              </li>
+              <li>
+                <a className="menu-parent">Package Managers</a>
+                <ul>
+                  <li>
+                    <a className="menu-child">npm</a>
+                  </li>
+                  <li>
+                    <a className="menu-child">yarn</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a className="menu-parent">CSS Pre-processors</a>
+                <ul>
+                  <li>
+                    <a className="menu-child">SASS</a>
+                  </li>
+                  <li>
+                    <a className="menu-child">PostCSS</a>
+                  </li>
+                </ul>
+                <a className="menu-parent">CSS Frameworks</a>
+                <ul>
+                  <li>
+                    <a className="menu-child">Bootstrap</a>
+                  </li>
+                  <li>
+                    <a className="menu-child">Bulma</a>
+                  </li>
+                  <li>
+                    <a className="menu-child">Materialize</a>
+                  </li>
+                  <li>
+                    <a className="menu-child">Semantic UI</a>
+                  </li>
+                </ul>
+                <a className="menu-parent">Build Tools</a>
+                <ul>
+                  <li>
+                    <a className="menu-coparent">Linters and Formatters</a>
+                    <ul>
+                      <li>
+                        <a className="menu-child">Prettier</a>
+                      </li>
+                      <li>
+                        <a className="menu-child">ESLint</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a className="menu-coparent">Task Runners</a>
+                    <ul>
+                      <li>
+                        <a className="menu-child">npm scripts</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a className="menu-coparent">Module Bundlers</a>
+                    <ul>
+                      <li>
+                        <a className="menu-child">Webpack</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <p className="menu-label">Back-End</p>
+          </aside>
+        </div>
       </div>
 
-      <div class="content" />
+      <div className="content-wrapper">
+        <div className="card" style={{ width: "200px", height: "200px" }}>
+          <div className="card-content">
+            <p>
+              <a
+                href="https://en.wikipedia.org/wiki/Cascading_Style_Sheets"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Wikipedia - Cascading Style Sheets
+              </a>
+            </p>
+          </div>
+          <footer className="card-footer">
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-check" style={{ color: "green" }} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-comment" style={{color: "white"}} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-star" />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-thumbs-up" style={{color: "lightblue"}} />
+              </span>
+            </a>
+          </footer>
+        </div>
+
+        <div className="card" style={{ width: "200px", height: "200px" }}>
+          <div className="card-content">
+            <p>
+              <a
+                href="https://css-tricks.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                CSS-Tricks
+              </a>
+            </p>
+          </div>
+          <footer className="card-footer">
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-check" style={{ color: "green" }} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-comment" style={{color: "white"}} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-star" />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-thumbs-up" />
+              </span>
+            </a>
+          </footer>
+        </div>
+
+        <div className="card" style={{ width: "200px", height: "200px" }}>
+          <div className="card-content">
+            <p>
+              <a
+                href="https://www.w3schools.com/css/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                w3schools - CSS Tutorial
+              </a>
+            </p>
+          </div>
+          <footer className="card-footer">
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-check" />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-comment" style={{color: "white"}} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-star" />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-thumbs-up" />
+              </span>
+            </a>
+          </footer>
+        </div>
+
+        <div className="card" style={{ width: "200px", height: "200px" }}>
+          <div className="card-content">
+            <p>
+              <a
+                href="https://www.codecademy.com/learn/learn-css"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                codecademy - Learn CSS
+              </a>
+            </p>
+          </div>
+          <footer className="card-footer">
+            <a href="#" className="card-footer-item">
+              <span className="icon card-footer-item">
+                <i className="fas fa-check" style={{ color: "green" }} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-comment" style={{color: "white"}} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="fas fa-star" style={{ color: "yellow" }} />
+              </span>
+            </a>
+            <a href="#" className="card-footer-item">
+              <span className="icon">
+                <i className="far fa-thumbs-up" />
+              </span>
+            </a>
+          </footer>
+        </div>
+      </div>
     </div>
   );
 }
