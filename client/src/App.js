@@ -1,24 +1,30 @@
-import React from "react";
-import Menu from "./components/Menu";
-// import { BrowserRouter as Router, Route } from "react-router-dom";
-// import Search from "./pages/Search";
-// import Saved from "./pages/Saved";
-// import Navbar from "./components/Navbar";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Main from "./pages/Main";
+import Favorites from "./pages/Favorites";
+import Comments from "./pages/Comments";
+import Admin from "./pages/Admin";
+
 import "./App.css";
 
-function App() {
-  return (
-    <Menu />
+class App extends Component {
+  state = {
+    isAuth: false,
+    isAdmin: false
+  }
 
-    // <Router>
-    //   <div>
-    //     <Navbar />
-    //     <Route exact path="/" component={Search} />
-    //     <Route exact path="/search" component={Search} />
-    //     <Route exact path="/saved" component={Saved} />
-    //   </div>
-    // </Router>
-  );
+  render() {
+    return (
+      <Router>
+        <Navbar />
+        <Route exact path="/" render={(props) => <Main {...props} isAuthed={this.state.isAuth} />} />
+        <Route exact path="/favorites" component={Favorites} />
+        <Route exact path="/comments" component={Comments} />
+        <Route exact path="/admin" component={Admin} />
+      </Router>
+    );
+  }
 }
 
 export default App;

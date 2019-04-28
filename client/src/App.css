@@ -1,5 +1,4 @@
 body {
-  padding-left: 210px;
   padding-right: 5px;
   box-sizing: border-box;
 }
@@ -8,3 +7,5 @@ html {
   background-color: black;
   overflow: hidden;
 }
+
+

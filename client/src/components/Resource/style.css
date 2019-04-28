@@ -1,0 +1,21 @@
+.card {
+    display: inline-table;
+    overflow: hidden;
+    margin: 10px;
+    border-radius: 6px;
+    background-color: lightgray;
+  }
+  
+  .card a {
+    color: blue;
+    font-size: 20px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+  }
+  
+  .card footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background-color: black;
+  }
