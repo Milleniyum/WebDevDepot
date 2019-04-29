@@ -14,11 +14,13 @@ class App extends Component {
     isAdmin: false
   }
 
+  
+
   render() {
     return (
       <Router>
         <Navbar />
-        <Route exact path="/" render={(props) => <Main {...props} isAuthed={this.state.isAuth} />} />
+        <Route exact path="/" render={(props) => <Main isAuthed={this.state.isAuth} />} />
         <Route exact path="/favorites" component={Favorites} />
         <Route exact path="/comments" component={Comments} />
         <Route exact path="/admin" component={Admin} />

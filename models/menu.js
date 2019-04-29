@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const menuSchema = new Schema({
+  level: { type: Number, required: true },
+  order: { type: Number, required: true},
   title: { type: String, required: true },
-  main: { type: Boolean, default: true },
-  order: { type: Number, required: true, default: 1000 },
   resources: [
     {
       type: Schema.Types.ObjectId,

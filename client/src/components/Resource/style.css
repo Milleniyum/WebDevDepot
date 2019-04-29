@@ -4,6 +4,8 @@
     margin: 10px;
     border-radius: 6px;
     background-color: lightgray;
+    height: 200px;
+    width: 200px;
   }
   
   .card a {
@@ -18,4 +20,16 @@
     width: 100%;
     bottom: 0;
     background-color: black;
+  }
+
+  .clicked {
+    color: green;
+  }
+
+  .favorited {
+    color: yellow;
+  }
+
+  .liked {
+    color: white;
   }

@@ -3,7 +3,7 @@ import "./style.css";
 
 function Wrapper({ children, marginLeft }) {
   return (
-    <div className="content-wrapper" style={{ "margin-left": (marginLeft ? marginLeft: 0 ) }}> { children }</div>
+    <div className="content-wrapper" style={{ marginLeft: (marginLeft ? marginLeft: 0 ) }}> { children }</div>
   );
 }
 
