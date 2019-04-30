@@ -16,7 +16,10 @@ class Main extends Component {
   getMenuItems = () => {
     // will get from mongodb
     const menuItems = [
-      { title: "Learning Path", id: 1 },
+      {
+        title: "Web Dev", id: 1, items: [
+        {title: "Learning Paths", id: 12}
+      ]},
       {
         title: "Front End", id: 2, items: [
           { title: "HTML", id: 3 },
@@ -41,8 +44,7 @@ class Main extends Component {
     this.setState({menuItems:menuItems})
   }
 
-  getResources = (event, id) => {
-    event.preventDefault();
+  getResources = (id) => {
     const resources = [
       { id: 1, title: "Wikipedia - Cascading Style Sheets", url: "https://en.wikipedia.org/wiki/Cascading_Style_Sheets", clicked: true, favorite: true, liked: true },
       { id: 2, title: "CSS Tricks", url: "https://www.css-tricks.com", clicked: false, favorite: false, liked: false }

@@ -21,6 +21,30 @@
   .menu {
     height: 100%;
   }
+
+  .menu-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .menu-label a {
+    color: gray;
+  }
+
+  .menu-label a.is-active {
+    color: blue;
+  }
+
+  .menu-label a:hover {
+    color: black;
+  }
+
+  .menu-label .icon {
+    float: right;
+    color: #0080ff;
+    cursor: pointer;
+    font-size: 18px;
+  }
   
   .menu-parent {
     font-weight: bold;

@@ -5,6 +5,8 @@ const menuSchema = new Schema({
   level: { type: Number, required: true },
   order: { type: Number, required: true},
   title: { type: String, required: true },
+  description: { type: String },
+  sourceURL: {type: String},
   resources: [
     {
       type: Schema.Types.ObjectId,
