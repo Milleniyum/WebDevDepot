@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const menuSchema = new Schema({
   level: { type: Number, required: true },
-  order: { type: Number, required: true},
+  position: { type: Number, required: true},
   title: { type: String, required: true },
   description: { type: String },
   sourceURL: {type: String},
