@@ -8,7 +8,7 @@ class Favorites extends Component {
   render() {
     return (
       <div>
-        <Wrapper>
+        <Wrapper marginTop="55px" heightOffset="65px">
           <Resource favorite={true}/>
           <Resource favorite={true}/>
           <Resource favorite={true}/>

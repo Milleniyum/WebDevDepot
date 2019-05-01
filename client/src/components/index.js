@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import "./style.css";
 
 // Depending on the current path, this component sets the "active" class on the appropriate navigation link item
-function Navbar(props) {
+function Navbar() {
   return (
     <nav
-      className="navbar is-transparent is-fixed-top"
+      className="navbar is-fixed-top"
       role="navigation"
       aria-label="main navigation"
     >
@@ -28,7 +28,7 @@ function Navbar(props) {
 
       <div className="navbar-menu">
         <div className="navbar-start">
-          <Link onClick={() => props.setTab("")} className="navbar-item" to="/admin">
+          <Link className="navbar-item" to="/admin">
             Admin
           </Link>
         </div>

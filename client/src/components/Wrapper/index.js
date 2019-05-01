@@ -1,9 +1,20 @@
 import React from "react";
 import "./style.css";
 
-function Wrapper({ children, marginLeft, padding }) {
+function Wrapper({ children, marginTop, marginLeft, heightOffset, padding }) {
   return (
-    <div className="content-wrapper" style={{ marginLeft: (marginLeft ? marginLeft: 0 ), padding: (padding ? padding : 0) }}> { children }</div>
+    <div
+      className="content-wrapper"
+      style={{
+        marginTop: marginTop ? marginTop : 0,
+        marginLeft: marginLeft ? marginLeft : 0,
+        height: heightOffset ? "calc(100vh - " + heightOffset : "calc(100vh - 0",
+        padding: padding ? padding : 0
+      }}
+    >
+      {" "}
+      {children}
+    </div>
   );
 }
 
