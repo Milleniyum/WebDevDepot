@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const PORT = process.env.PORT || 3001;
-const booksController = require("./controllers/booksController");
+const routes = require("./routes.js");
+const PORT = process.env.PORT || 5000;
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
@@ -11,22 +11,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 };
-
-// app.get("/api/saved", (req, res) => {
-//   booksController.findAll(req, res);
-// });
-
-// // Add routes, both API and view
-// app.post("/api/book", (req, res) => {
-//   booksController.update(req, res);
-// });
-
-// app.delete("/api/book/:bookId", (req, res) => {
-//   booksController.remove(req, res);
-// });
+app.use(routes);
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/webdevdepot`");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/webdevdepot`", { useNewUrlParser: true });
 
 // Start the API server
 app.listen(PORT, () => {

@@ -49,6 +49,7 @@ class Resource extends Component {
           <a href="/" className="card-footer-item">
             <span className="icon">
               <i
+                title="likes"
                 className={
                   this.state.liked
                     ? "fas fa-thumbs-up liked"

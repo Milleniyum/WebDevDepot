@@ -6,8 +6,8 @@ import API from "../utils/API";
 
 class AdminMenu extends Component {
   state = {
-    position: "",
     level: 0,
+    position: "",
     title: "",
     description: "",
     source: "",
@@ -21,12 +21,21 @@ class AdminMenu extends Component {
     this.props.setTab("menu");
   }
 
-  saveMenuItem = event => {
+  saveMenu = event => {
     event.preventDefault();
-    console.log("saving menu item");
+    API.saveMenu({
+      position: this.state.level,
+      level: this.state.level,
+      title: this.state.level,
+      description: this.state.level,
+      source: this.state.level
+    }).then((res) => {
+      console.log(res);
+    });
+
     this.setState({
-      position: "",
       level: 0,
+      position: "",
       title: "",
       description: "",
       source: "",
@@ -114,7 +123,7 @@ class AdminMenu extends Component {
                 <div className="field">
                   <FormBtn
                     disabled={!(this.state.position && this.state.title)}
-                    onClick={this.saveMenuItem}
+                    onClick={this.saveMenu}
                   >
                     {this.state.buttonText}
                   </FormBtn>
