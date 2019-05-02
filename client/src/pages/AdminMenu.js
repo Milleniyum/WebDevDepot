@@ -1,23 +1,49 @@
 import React, { Component } from "react";
 import Container from "../components/Container";
 import Wrapper from "../components/Wrapper";
+import { Input, DropDown, TextArea, FormBtn } from "../components/Form";
 import API from "../utils/API";
 
 class AdminMenu extends Component {
   state = {
-    menuLevel: 0
+    position: "",
+    level: 0,
+    title: "",
+    description: "",
+    source: "",
+    options: [0, 1, 2, 3],
+    buttonText: "Add"
   };
 
   componentDidMount() {
-    //setting the tab here instead of the tab component allows the tab to stay active if screen is refreshed
+    //setting the tab here instead of the tab component allows
+    //the tab to stay active if screen is refreshed
     this.props.setTab("menu");
   }
 
-  saveMenuItem = () => { };
+  saveMenuItem = event => {
+    event.preventDefault();
+    console.log("saving menu item");
+    this.setState({
+      position: "",
+      level: 0,
+      title: "",
+      description: "",
+      source: "",
+      buttonText: "Add"
+    });
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
   render() {
     return (
-        <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
+      <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
         <Container className="container">
           <div className="columns">
             <div className="column is-3">
@@ -33,69 +59,65 @@ class AdminMenu extends Component {
                   <div className="column">
                     <div className="field">
                       <label className="label">Position</label>
-                      <div className="control">
-                        <input
-                          className="input"
-                          type="text"
-                          placeholder="Pos Num"
-                        />
-                      </div>
+                      <Input
+                        value={this.state.position}
+                        onChange={this.handleInputChange}
+                        name="position"
+                        placeholder="Pos Num"
+                      />
                     </div>
                   </div>
 
                   <div className="column">
                     <div className="field">
                       <label className="label">Level</label>
-                      <div className="control">
-                        <div className="select">
-                          <select>
-                            <option>0</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                          </select>
-                        </div>
-                      </div>
+                      <DropDown
+                        value={this.state.level}
+                        onChange={this.handleInputChange}
+                        name="level"
+                        options={this.state.options}
+                      />
                     </div>
                   </div>
                 </div>
 
                 <div className="field">
                   <label className="label">Title</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="Menu Title"
-                    />
-                  </div>
+                  <Input
+                    value={this.state.title}
+                    onChange={this.handleInputChange}
+                    name="title"
+                    placeholder="Menu Title"
+                  />
                 </div>
 
                 <div className="field">
                   <label className="label">Description</label>
-                  <div className="control">
-                    <textarea
-                      className="textarea"
-                      placeholder="Menu Description"
-                    />
-                  </div>
+                  <TextArea
+                    value={this.state.description}
+                    onChange={this.handleInputChange}
+                    name="description"
+                    placeholder="Menu Description"
+                  />
                 </div>
 
                 <div className="field">
                   <label className="label">Source</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="Description Source"
-                    />
-                  </div>
+                  <Input
+                    value={this.state.source}
+                    onChange={this.handleInputChange}
+                    name="source"
+                    placeholder="Description Source"
+                  />
                 </div>
 
                 <div className="field">
-                  <div className="control">
-                    <button className="button is-link">Add</button>
-                  </div>
+                  <FormBtn
+                    disabled={!(this.state.position && this.state.title)}
+                    onClick={this.saveMenuItem}
+                  >
+                    {this.state.buttonText}
+                  </FormBtn>
                 </div>
               </form>
             </div>
@@ -138,8 +160,8 @@ class AdminMenu extends Component {
               </table>
             </div>
           </div>
-          </Container>
-          </Wrapper>
+        </Container>
+      </Wrapper>
     );
   }
 }
