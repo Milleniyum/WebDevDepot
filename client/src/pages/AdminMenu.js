@@ -12,27 +12,21 @@ class AdminMenu extends Component {
     description: "",
     source: "",
     options: [0, 1, 2, 3],
-    buttonText: "Add"
+    buttonText: "Add",
+    headers: ["Pos", "Level", "Title", "Description", "Source"],
+    menuItems: [],
+    updateId: "",
+    updatePos: ""
   };
 
   componentDidMount() {
     //setting the tab here instead of the tab component allows
     //the tab to stay active if screen is refreshed
     this.props.setTab("menu");
+    this.getMenuItems();
   }
 
-  saveMenu = event => {
-    event.preventDefault();
-    API.saveMenu({
-      position: this.state.level,
-      level: this.state.level,
-      title: this.state.level,
-      description: this.state.level,
-      source: this.state.level
-    }).then((res) => {
-      console.log(res);
-    });
-
+  resetForm = () => {
     this.setState({
       level: 0,
       position: "",
@@ -41,6 +35,54 @@ class AdminMenu extends Component {
       source: "",
       buttonText: "Add"
     });
+  };
+
+  getMenuItems = () => {
+    API.getMenuItems().then(res => {
+      this.setState({ menuItems: res.data });
+    });
+  };
+
+  addMenuItem = event => {
+    event.preventDefault();
+    API.addMenuItem({
+      position: this.state.position,
+      level: this.state.level,
+      title: this.state.title,
+      description: this.state.description,
+      source: this.state.source
+    }).then(res => {
+      this.getMenuItems();
+    });
+    this.resetForm();
+  };
+
+  updateMenuItem = (event) => {
+    event.preventDefault();
+    const menuItem = {
+      id: this.state.updateId,
+      oldPosition: this.state.updatePos,
+      item: {
+        position: this.state.position,
+        level: this.state.level,
+        title: this.state.title,
+        description: this.state.description,
+        source: this.state.source
+      }
+    };
+    
+    API.updateMenuItem(menuItem)
+      .then(res => {
+        this.getMenuItems();
+      });
+    this.resetForm();
+  };
+
+  deleteMenuItem = (id, position) => {
+    API.deleteMenuItem(id, position)
+      .then(res => {
+        this.getMenuItems();
+      });
   };
 
   handleInputChange = event => {
@@ -123,7 +165,11 @@ class AdminMenu extends Component {
                 <div className="field">
                   <FormBtn
                     disabled={!(this.state.position && this.state.title)}
-                    onClick={this.saveMenu}
+                    onClick={
+                      this.state.buttonText === "Add"
+                        ? this.addMenuItem
+                        : this.updateMenuItem
+                    }
                   >
                     {this.state.buttonText}
                   </FormBtn>
@@ -137,34 +183,54 @@ class AdminMenu extends Component {
               >
                 <thead>
                   <tr>
-                    <th>Pos</th>
-                    <th>Level</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Source</th>
+                    {this.state.headers.map(header => (
+                      <th key={header}>{header}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th>1</th>
-                    <td>0</td>
-                    <td>Web Development</td>
-                    <td>
-                      Web development is the work involved in developing a web
-                      site for the Internet (World Wide Web) or an intranet (a
-                      private network).
-                    </td>
-                    <td>
-                      <a
-                        href="https://en.wikipedia.org/wiki/Web_development"
-                        title="https://en.wikipedia.org/wiki/Web_development"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Description Source
-                      </a>
-                    </td>
-                  </tr>
+                  {this.state.menuItems.map(item => (
+                    <tr
+                      key={item._id}
+                      onDoubleClick={() => this.setState({
+                        updateId: item._id,
+                        updatePos: item.position,
+                        position: item.position,
+                        level: item.level,
+                        title: item.title,
+                        description: item.description,
+                        source: item.source,
+                        buttonText: "Update"
+                      })}
+                    >
+                      <td>{item.position}</td>
+                      <td>{item.level}</td>
+                      <td>{item.title}</td>
+                      <td>{item.description}</td>
+                      <td>
+                        {item.source ? (
+                          <a
+                            href={item.source}
+                            title={item.source}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Description Source
+                          </a>
+                        ) : (
+                          ""
+                        )}
+                      </td>
+                      <td>
+                        <span onClick={() => this.deleteMenuItem(item._id, item.position)}>
+                          <i
+                            className="fas fa-backspace"
+                            style={{ color: "red", cursor: "pointer" }}
+                          />
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

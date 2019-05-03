@@ -1,4 +1,4 @@
 module.exports = {
-  Menu: require("./menu"),
+  MenuItem: require("./menuitem"),
   Resource: require("./resource")
 };
