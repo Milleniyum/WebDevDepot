@@ -35,7 +35,7 @@ export function DropDown(props) {
       <div className="select">
         <select {...props}>
           {props.options.map(opt => (
-            <option key={opt}>{opt}</option>
+            <option key={opt.id} value={opt.id}>{opt.title}</option>
           ))}
         </select>
       </div>

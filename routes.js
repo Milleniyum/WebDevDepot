@@ -26,7 +26,7 @@ router.put("/api/menu", function(req, res) {
   let where = {};
   let set = {};
   const op = req.body.oldPosition;
-  const np = req.body.item.position;
+  const np = req.body.data.position;
 
   if (op > np) {
     where.position = { $lt: op, $gte: np };
@@ -34,11 +34,11 @@ router.put("/api/menu", function(req, res) {
   } else if (op < np) {
     where.position = { $gt: op, $lte: np };
     set.$inc = { position: -1 };
-  };
+  }
 
   db.MenuItem.updateMany(where, set)
     .then(result => {
-      db.MenuItem.findOneAndUpdate({ _id: req.body.id }, req.body.item)
+      db.MenuItem.findOneAndUpdate({ _id: req.body.id }, req.body.data)
         .then(result => res.json(result))
         .catch(err => res.status(422).json(err));
     })
@@ -46,15 +46,47 @@ router.put("/api/menu", function(req, res) {
 });
 
 router.delete("/api/menu", function(req, res) {
-  db.MenuItem.updateMany(
-    { position: { $gte: req.body.position } },
-    { $inc: { position: -1 } }
-  )
+  Promise.all([
+    db.MenuItem.updateMany(
+      { position: { $gte: req.body.position } },
+      { $inc: { position: -1 } }
+    ),
+    db.Resource.updateMany(
+      { menu_item_id: req.body.id },
+      { $unset: { menu_item_id: "" } }
+    )
+  ])
     .then(result => {
       db.MenuItem.findOneAndDelete({ _id: req.body.id })
         .then(result => res.json(result))
         .catch(err => res.status(422).json(err));
     })
+    .catch(err => res.status(422).json(err));
+});
+
+router.get("/api/resource", function(req, res) {
+  db.Resource.find({}, null, { sort: { title: 1 } })
+    .populate("menu_item_id")
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.post("/api/resource", function(req, res) {
+  db.Resource.create(req.body)
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.put("/api/resource", function(req, res) {
+  console.log(req.body.data.menu_item_id);
+  db.Resource.findOneAndUpdate({ _id: req.body.id }, req.body.data)
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.delete("/api/resource", function(req, res) {
+  db.Resource.findOneAndDelete({ _id: req.body.id })
+    .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
 });
 

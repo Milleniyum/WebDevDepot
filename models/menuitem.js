@@ -6,13 +6,7 @@ const menuSchema = new Schema({
   level: { type: Number, required: true },
   title: { type: String, required: true },
   description: { type: String },
-  source: {type: String},
-  resources: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Resource"
-    }
-  ]
+  source: {type: String}
 });
 
 const MenuItem = mongoose.model("MenuItem", menuSchema);

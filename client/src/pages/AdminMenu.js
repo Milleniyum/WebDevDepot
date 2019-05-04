@@ -11,7 +11,7 @@ class AdminMenu extends Component {
     title: "",
     description: "",
     source: "",
-    options: [0, 1, 2, 3],
+    options: [{ id: 0, title: 0 }, { id: 1, title: 1 }, { id: 2, title: 2 }, { id: 3, title: 3 }],
     buttonText: "Add",
     headers: ["Pos", "Level", "Title", "Description", "Source"],
     menuItems: [],
@@ -46,7 +46,7 @@ class AdminMenu extends Component {
   addMenuItem = event => {
     event.preventDefault();
     API.addMenuItem({
-      position: this.state.position,
+      position: isNaN(this.state.position) || parseInt(this.state.position) === 0 ? 1 : this.state.position,
       level: this.state.level,
       title: this.state.title,
       description: this.state.description,
@@ -62,8 +62,8 @@ class AdminMenu extends Component {
     const menuItem = {
       id: this.state.updateId,
       oldPosition: this.state.updatePos,
-      item: {
-        position: this.state.position,
+      data: {
+        position: isNaN(this.state.position) || parseInt(this.state.position) === 0 ? 1 : this.state.position,
         level: this.state.level,
         title: this.state.title,
         description: this.state.description,
@@ -78,8 +78,8 @@ class AdminMenu extends Component {
     this.resetForm();
   };
 
-  deleteMenuItem = (id, position) => {
-    API.deleteMenuItem(id, position)
+  deleteMenuItem = (menuItem) => {
+    API.deleteMenuItem(menuItem)
       .then(res => {
         this.getMenuItems();
       });
@@ -222,7 +222,7 @@ class AdminMenu extends Component {
                         )}
                       </td>
                       <td>
-                        <span onClick={() => this.deleteMenuItem(item._id, item.position)}>
+                        <span onClick={() => this.deleteMenuItem({id: item._id, position: item.position})}>
                           <i
                             className="fas fa-backspace"
                             style={{ color: "red", cursor: "pointer" }}

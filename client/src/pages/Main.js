@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Menu from "../components/Menu";
 import Wrapper from "../components/Wrapper";
 import Resource from "../components/Resource";
+import API from "../utils/API";
 
 class Main extends Component {
   state = {
@@ -14,42 +15,37 @@ class Main extends Component {
   }
 
   getMenuItems = () => {
-    // will get from mongodb
-    const menuItems = [
-      {
-        title: "Web Dev",
-        id: 1,
-        items: [{ title: "Learning Paths", id: 12 }]
-      },
-      {
-        title: "Front End",
-        id: 2,
-        items: [
-          { title: "HTML", id: 3 },
-          { title: "CSS", id: 4 },
-          {
-            title: "Package Managers",
-            id: 5,
-            items: [{ title: "npm", id: 6 }, { title: "yarn", id: 7 }]
-          },
-          {
-            title: "Build Tools",
-            id: 8,
-            items: [
-              {
-                title: "Linters and Formatters",
-                id: 9,
-                items: [
-                  { title: "Prettier", id: 10 },
-                  { title: "ESLint", id: 11 }
-                ]
-              }
-            ]
+    API.getMenuItems().then(res => {
+      const menuItems = []
+      let ml;
+      res.data.forEach(item => {
+        ml = menuItems.length;
+        if (ml === 0) { //no matter what the actual item level add the first menu item
+          menuItems.push(item);
+        } else if (item.level === 0) { //all level 0 items get pushed to menuItems base array
+          menuItems.push(item);
+        } else if (!menuItems[ml - 1].items) { //level is greater than 0 - if last item doesn't have items add first level 1 item
+          menuItems[ml - 1].items = [item];
+        } else { //level 0 has items
+          let ll1 = menuItems[ml - 1].items.length; //get the length of level 1 items
+          if (menuItems[ml - 1].items[ll1 - 1].level === item.level) { //level 1 item - add to level 1 array
+            menuItems[ml - 1].items.push(item); //add item level 1 to level 0's items
+          } else if (!menuItems[ml - 1].items[ll1 - 1].items) { //add first level 2 item to level 1's items
+            menuItems[ml - 1].items[ll1 - 1].items = [item];
+          } else { //level 2 items exist
+            let ll2 = menuItems[ml - 1].items[ll1 - 1].items.length;
+            if (menuItems[ml - 1].items[ll1 - 1].items[ll2 - 1].level === item.level) { //level 2 item - add to level 2 array
+              menuItems[ml - 1].items[ll1 - 1].items.push(item);
+            } else if (!menuItems[ml - 1].items[ll1 - 1].items[ll2 - 1].items) {//add first level 3 item to level 2's items
+              menuItems[ml - 1].items[ll1 - 1].items[ll2 - 1].items = [item];
+            } else { //level 2 has items so add this level 3 item to level 2's items
+              menuItems[ml - 1].items[ll1 - 1].items[ll2 - 1].items.push(item);
+            }
           }
-        ]
-      }
-    ];
-    this.setState({ menuItems: menuItems });
+        }
+      });
+      this.setState({ menuItems: menuItems });
+    });
   };
 
   getResources = id => {
@@ -82,7 +78,7 @@ class Main extends Component {
           getResources={this.getResources}
           menuItems={this.state.menuItems}
         />
-        <Wrapper marginTop="55px" marginLeft="205px" heightOffset="65px">
+        <Wrapper marginTop="55px" marginLeft="215px" heightOffset="65px">
           {this.state.resources.map(resource => (
             <Resource
               key={resource.id}

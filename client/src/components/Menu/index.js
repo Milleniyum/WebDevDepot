@@ -42,12 +42,12 @@ export default class Menu extends Component {
         <div className="menu-container">
           <aside className="menu">
             {this.props.menuItems.map(menuItem => (
-              <div key={menuItem.id}>
+              <div key={menuItem._id}>
                 <p className="menu-label">
                   <a
                     className=" menu-item"
                     onClick={event =>
-                      this.clickMenu(event, menuItem.id)
+                      this.clickMenu(event, menuItem._id)
                     }
                     href="/"
                   >
@@ -55,19 +55,19 @@ export default class Menu extends Component {
                   </a>
                   {(menuItem.items ? (
                     <span
-                      onClick={event => this.toggleMenu(menuItem.id)}
+                      onClick={event => this.toggleMenu(menuItem._id)}
                       className="icon"
                     >
                       <i
                         className="fa fa-chevron-up"
-                        id={"toggle-" + menuItem.id}
+                        id={"toggle-" + menuItem._id}
                       />
                     </span>
                   ) : "")}
                 </p>
                 {menuItem.items ? (
                   <UL
-                    toggleId={menuItem.id}
+                    toggleId={menuItem._id}
                     level={1}
                     clickMenu={this.clickMenu}
                     menuItems={menuItem.items}
@@ -93,8 +93,8 @@ function UL(props) {
     >
       {props.menuItems.map(menuItem => (
         <LI
-          key={menuItem.id}
-          id={menuItem.id}
+          key={menuItem._id}
+          id={menuItem._id}
           level={props.level}
           menuItem={menuItem}
           clickMenu={props.clickMenu}
@@ -114,7 +114,7 @@ function LI(props) {
       }
     >
       <a className="menu-item"
-        onClick={event => props.clickMenu(event, props.menuItem.id)}
+        onClick={event => props.clickMenu(event, props.menuItem._id)}
         href="/"
       >
         {props.menuItem.title}

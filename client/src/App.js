@@ -29,7 +29,7 @@ class App extends Component {
         <Route
           exact
           path="/"
-          render={props => <Main isAuthed={this.state.isAuth} />}
+          render={props => <Main />}
         />
         <Route exact path="/favorites" component={Favorites} />
         <Route exact path="/comments" component={Comments} />

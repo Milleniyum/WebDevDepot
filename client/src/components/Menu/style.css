@@ -3,7 +3,7 @@
     top: 55px;
     left: 5px;
     height: calc(100% - 65px);
-    width: 200px;
+    width: 210px;
     border-radius: 6px;
     border-right: 1px solid black;
     box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
@@ -25,6 +25,7 @@
   .menu-label {
     font-size: 14px;
     font-weight: 600;
+    margin-top: 10px;
   }
 
   .menu-label a {
@@ -57,4 +58,8 @@
   
   .search-box {
     padding: 2px;
+  }
+
+  .sidebar .field {
+    margin-bottom: 0!important;
   }
