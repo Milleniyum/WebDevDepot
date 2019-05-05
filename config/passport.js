@@ -1,7 +1,7 @@
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 
-const User = require("../models/User");
+const User = require("../models/user");
 
 // CHANGE: USE "createStrategy" INSTEAD OF "authenticate"
 passport.use(new LocalStrategy(User.authenticate()));
