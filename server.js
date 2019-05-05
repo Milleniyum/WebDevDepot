@@ -1,8 +1,16 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const routes = require("./routes.js");
 const PORT = process.env.PORT || 5000;
+var session = require("express-session");
+var passport = require("./config/passport");
+
+//Passport
+app.use(session({ secret: process.env.PASSPORT_SECRET, resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));

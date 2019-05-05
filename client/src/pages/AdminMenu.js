@@ -11,7 +11,12 @@ class AdminMenu extends Component {
     title: "",
     description: "",
     source: "",
-    options: [{ id: 0, title: 0 }, { id: 1, title: 1 }, { id: 2, title: 2 }, { id: 3, title: 3 }],
+    options: [
+      { id: 0, title: 0 },
+      { id: 1, title: 1 },
+      { id: 2, title: 2 },
+      { id: 3, title: 3 }
+    ],
     buttonText: "Add",
     headers: ["Pos", "Level", "Title", "Description", "Source"],
     menuItems: [],
@@ -46,7 +51,10 @@ class AdminMenu extends Component {
   addMenuItem = event => {
     event.preventDefault();
     API.addMenuItem({
-      position: isNaN(this.state.position) || parseInt(this.state.position) === 0 ? 1 : this.state.position,
+      position:
+        isNaN(this.state.position) || parseInt(this.state.position) === 0
+          ? 1
+          : this.state.position,
       level: this.state.level,
       title: this.state.title,
       description: this.state.description,
@@ -57,32 +65,33 @@ class AdminMenu extends Component {
     this.resetForm();
   };
 
-  updateMenuItem = (event) => {
+  updateMenuItem = event => {
     event.preventDefault();
     const menuItem = {
       id: this.state.updateId,
       oldPosition: this.state.updatePos,
       data: {
-        position: isNaN(this.state.position) || parseInt(this.state.position) === 0 ? 1 : this.state.position,
+        position:
+          isNaN(this.state.position) || parseInt(this.state.position) === 0
+            ? 1
+            : this.state.position,
         level: this.state.level,
         title: this.state.title,
         description: this.state.description,
         source: this.state.source
       }
     };
-    
-    API.updateMenuItem(menuItem)
-      .then(res => {
-        this.getMenuItems();
-      });
+
+    API.updateMenuItem(menuItem).then(res => {
+      this.getMenuItems();
+    });
     this.resetForm();
   };
 
-  deleteMenuItem = (menuItem) => {
-    API.deleteMenuItem(menuItem)
-      .then(res => {
-        this.getMenuItems();
-      });
+  deleteMenuItem = menuItem => {
+    API.deleteMenuItem(menuItem).then(res => {
+      this.getMenuItems();
+    });
   };
 
   handleInputChange = event => {
@@ -108,71 +117,61 @@ class AdminMenu extends Component {
               >
                 <div className="columns">
                   <div className="column">
-                    <div className="field">
-                      <label className="label">Position</label>
-                      <Input
-                        value={this.state.position}
-                        onChange={this.handleInputChange}
-                        name="position"
-                        placeholder="Pos Num"
-                      />
-                    </div>
+                    <Input
+                      label="Position"
+                      value={this.state.position}
+                      onChange={this.handleInputChange}
+                      name="position"
+                      placeholder="Pos Num"
+                    />
                   </div>
 
                   <div className="column">
-                    <div className="field">
-                      <label className="label">Level</label>
-                      <DropDown
-                        value={this.state.level}
-                        onChange={this.handleInputChange}
-                        name="level"
-                        options={this.state.options}
-                      />
-                    </div>
+                    <DropDown
+                      label="Level"
+                      value={this.state.level}
+                      onChange={this.handleInputChange}
+                      name="level"
+                      options={this.state.options}
+                    />
                   </div>
                 </div>
 
-                <div className="field">
-                  <label className="label">Title</label>
-                  <Input
-                    value={this.state.title}
-                    onChange={this.handleInputChange}
-                    name="title"
-                    placeholder="Menu Title"
-                  />
-                </div>
+                <Input
+                  label="Title"
+                  value={this.state.title}
+                  onChange={this.handleInputChange}
+                  name="title"
+                  placeholder="Menu Title"
+                />
 
-                <div className="field">
-                  <label className="label">Description</label>
-                  <TextArea
-                    value={this.state.description}
-                    onChange={this.handleInputChange}
-                    name="description"
-                    placeholder="Menu Description"
-                  />
-                </div>
+                <TextArea
+                  label="Description"
+                  value={this.state.description}
+                  onChange={this.handleInputChange}
+                  name="description"
+                  placeholder="Menu Description"
+                />
 
-                <div className="field">
-                  <label className="label">Source</label>
                   <Input
+                    label="Source"
                     value={this.state.source}
                     onChange={this.handleInputChange}
                     name="source"
                     placeholder="Description Source"
                   />
-                </div>
 
                 <div className="field">
                   <FormBtn
+                    button="is-link"
+                    buttontext={this.state.buttonText}
                     disabled={!(this.state.position && this.state.title)}
                     onClick={
                       this.state.buttonText === "Add"
                         ? this.addMenuItem
                         : this.updateMenuItem
                     }
-                  >
-                    {this.state.buttonText}
-                  </FormBtn>
+                  />
                 </div>
               </form>
             </div>
@@ -192,16 +191,18 @@ class AdminMenu extends Component {
                   {this.state.menuItems.map(item => (
                     <tr
                       key={item._id}
-                      onDoubleClick={() => this.setState({
-                        updateId: item._id,
-                        updatePos: item.position,
-                        position: item.position,
-                        level: item.level,
-                        title: item.title,
-                        description: item.description,
-                        source: item.source,
-                        buttonText: "Update"
-                      })}
+                      onDoubleClick={() =>
+                        this.setState({
+                          updateId: item._id,
+                          updatePos: item.position,
+                          position: item.position,
+                          level: item.level,
+                          title: item.title,
+                          description: item.description,
+                          source: item.source,
+                          buttonText: "Update"
+                        })
+                      }
                     >
                       <td>{item.position}</td>
                       <td>{item.level}</td>
@@ -222,7 +223,14 @@ class AdminMenu extends Component {
                         )}
                       </td>
                       <td>
-                        <span onClick={() => this.deleteMenuItem({id: item._id, position: item.position})}>
+                        <span
+                          onClick={() =>
+                            this.deleteMenuItem({
+                              id: item._id,
+                              position: item.position
+                            })
+                          }
+                        >
                           <i
                             className="fas fa-backspace"
                             style={{ color: "red", cursor: "pointer" }}

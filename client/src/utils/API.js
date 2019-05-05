@@ -1,6 +1,19 @@
 import axios from "axios";
 
 export default {
+  register: function (user) {
+    return axios.post("/api/register", user);
+  },
+  login: function (user) {
+    return axios.post("/api/login", user);
+  },
+  isAuthorized: function () {
+    return axios.get("/api/authorized");
+  },
+  logout: function () {
+    return axios.get("/api/logout");
+  },
+
   //Menu Items
   getMenuItems: function () {
     return axios.get("/api/menu");
@@ -14,8 +27,11 @@ export default {
   deleteMenuItem: function (menuItem) {
     return axios.delete("/api/menu", { data: menuItem });
   },
-  getResources: function () {
-    return axios.get("/api/resource");
+
+  //Resources
+  getResources: function (id) {
+    if (id) return axios.get("/api/resource/" + id);
+    return axios.get("/api/resource/noid");
   },
   addResource: function (resource) {
     return axios.post("/api/resource", resource);

@@ -74,10 +74,12 @@ class AdminResources extends Component {
       data: {
         title: this.state.title,
         url: this.state.url,
-        tags: this.state.tags.split(",").map(tag => tag.trim()),
+        tags: this.state.tags.split(",").map(tag => tag.trim())
       }
     };
-    this.state.menuItem ? resource.data.menu_item_id = this.state.menuItem : resource.data.$unset = { menu_item_id: "" };
+    this.state.menuItem
+      ? (resource.data.menu_item_id = this.state.menuItem)
+      : (resource.data.$unset = { menu_item_id: "" });
 
     API.updateResource(resource).then(res => {
       this.getResources();
@@ -85,8 +87,8 @@ class AdminResources extends Component {
     this.resetForm();
   };
 
-  deleteResource = (id) => {
-    API.deleteResource({id: id}).then(res => {
+  deleteResource = id => {
+    API.deleteResource({ id: id }).then(res => {
       this.getResources();
     });
   };
@@ -111,57 +113,49 @@ class AdminResources extends Component {
                   borderRadius: "6px"
                 }}
               >
-                <div className="field">
-                  <label className="label">Menu Item</label>
-                  <DropDown
-                    value={this.state.menuItem}
-                    onChange={this.handleInputChange}
-                    name="menuItem"
-                    options={this.state.options}
-                  />
-                </div>
+                <DropDown
+                  label="Menu Item"
+                  value={this.state.menuItem}
+                  onChange={this.handleInputChange}
+                  name="menuItem"
+                  options={this.state.options}
+                />
 
-                <div className="field">
-                  <label className="label">Title</label>
-                  <Input
-                    value={this.state.title}
-                    onChange={this.handleInputChange}
-                    name="title"
-                    placeholder="Resource Title"
-                  />
-                </div>
+                <Input
+                  label="Title"
+                  value={this.state.title}
+                  onChange={this.handleInputChange}
+                  name="title"
+                  placeholder="Resource Title"
+                />
 
-                <div className="field">
-                  <label className="label">URL</label>
-                  <Input
-                    value={this.state.url}
-                    onChange={this.handleInputChange}
-                    name="url"
-                    placeholder="Website Address"
-                  />
-                </div>
+                <Input
+                  label="URL"
+                  value={this.state.url}
+                  onChange={this.handleInputChange}
+                  name="url"
+                  placeholder="Website Address"
+                />
 
-                <div className="field">
-                  <label className="label">Tags (comma seperated)</label>
-                  <Input
-                    value={this.state.tags}
-                    onChange={this.handleInputChange}
-                    name="tags"
-                    placeholder="Tags"
-                  />
-                </div>
+                <Input
+                  label="Tags (comma seperated)"
+                  value={this.state.tags}
+                  onChange={this.handleInputChange}
+                  name="tags"
+                  placeholder="Tags"
+                />
 
                 <div className="field">
                   <FormBtn
+                    button="is-link"
+                    buttontext={this.state.buttonText}
                     disabled={!(this.state.title && this.state.url)}
                     onClick={
                       this.state.buttonText === "Add"
                         ? this.addResource
                         : this.updateResource
                     }
-                  >
-                    {this.state.buttonText}
-                  </FormBtn>
+                  />
                 </div>
               </form>
             </div>

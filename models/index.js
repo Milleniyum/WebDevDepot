@@ -1,4 +1,5 @@
 module.exports = {
   MenuItem: require("./MenuItem"),
-  Resource: require("./Resource")
+  Resource: require("./Resource"),
+  User: require("./User")
 };

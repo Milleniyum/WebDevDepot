@@ -16,10 +16,10 @@
     overflow-y: auto;
     height: 500px;
     padding-left: 10px;
-    height: calc(100% - 60px);
+    height: calc(100% - 50px);
   }
   .menu {
-    height: 100%;
+    height: auto;
   }
 
   .menu-label {

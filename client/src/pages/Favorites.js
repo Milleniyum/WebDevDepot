@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
-import Resource from "../components/Resource";
 
 class Favorites extends Component {
   state = {};
@@ -9,9 +8,7 @@ class Favorites extends Component {
     return (
       <div>
         <Wrapper marginTop="55px" heightOffset="65px">
-          <Resource favorite={true}/>
-          <Resource favorite={true}/>
-          <Resource favorite={true}/>
+          
         </Wrapper>
       </div>
     );

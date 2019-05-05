@@ -19,9 +19,9 @@ function Navbar(props) {
       aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <Link className="navbar-item" to="/">
+        <a className="navbar-item" href="/">
           <img src="/images/brand_logo.png" alt="logo" />
-        </Link>
+        </a>
         <Link className="navbar-burger burger" to=""
           role="button"
           aria-label="menu"
@@ -34,29 +34,31 @@ function Navbar(props) {
         </Link>
       </div>
 
+
       <div className="navbar-menu">
         <div className="navbar-start">
-          <Link onClick={event => adminLoaded(event, props.setTab)} className="navbar-item" to="/admin">
+          {props.isAdmin ? <Link onClick={event => adminLoaded(event, props.setTab)} className="navbar-item" to="/admin">
             Admin
-          </Link>
+          </Link> : ""}
         </div>
 
         <div className="navbar-end">
-          <Link className="navbar-item" to="/comments">
-            <span className="icon">
-              <i className="fas fa-comment" style={{ color: "white" }} />
-            </span>
-          </Link>
-          <Link className="navbar-item" to="/favorites">
-            <span className="icon navbar-item">
-              <i className="fas fa-star" style={{ color: "yellow" }}/>
-            </span>
-          </Link>
+          {props.isAuth ?
+            <React.Fragment><Link className="navbar-item" to="/comments">
+              <span className="icon">
+                <i className="fas fa-comment" style={{ color: "white" }} />
+              </span>
+            </Link>
+            <Link className="navbar-item" to="/favorites">
+              <span className="icon navbar-item">
+                <i className="fas fa-star" style={{ color: "yellow" }} />
+              </span>
+            </Link></React.Fragment> : ""}
 
           <div className="navbar-item">
             <div className="buttons">
-              <Link className="button is-primary" to="">
-                <strong>Log in</strong>
+              <Link onClick={props.isAuth ? props.logout : props.showLogin} className="button is-info" to="">
+                <strong>{props.isAuth ? ("Logout (" + props.username + ")") : "Log in"}</strong>
               </Link>
             </div>
           </div>

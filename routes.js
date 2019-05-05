@@ -1,7 +1,54 @@
+const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 const path = require("path");
 const db = require("./models");
+
+router.post("/api/register", function(req, res) {
+  console.log("registering user");
+  db.User.register(
+    new db.User({ username: req.body.username, email: req.body.email }),
+    req.body.password,
+    function(err, user) {
+      if (err) {
+        console.log(err);
+        return res.json(err);
+      }
+      passport.authenticate("local")(req, res, function(data) {
+        res.json(req.user);
+      });
+    }
+  );
+});
+
+router.post("/api/login", function(req, res, next) {
+  passport.authenticate("local", function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.json(info);
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+});
+
+router.get("/api/authorized", function(req, res) {
+  if (req.isAuthenticated()) {
+    return res.json(req.user);
+  }
+  res.json({ message: "no auth" });
+});
+
+router.get("/api/logout", function(req, res){
+  req.logout();
+  res.json({ message: "logged out" });
+});
 
 router.get("/api/menu", function(req, res) {
   db.MenuItem.find({}, null, { sort: { position: 1 } })
@@ -64,8 +111,16 @@ router.delete("/api/menu", function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
-router.get("/api/resource", function(req, res) {
-  db.Resource.find({}, null, { sort: { title: 1 } })
+router.get("/api/resource/:id", function(req, res) {
+  let where, sort;
+  req.params.id != "noid"
+    ? (where = { menu_item_id: req.params.id })
+    : (where = {});
+  req.params.id != "noid" > 0
+    ? (sort = { sort: { likes: -1 } })
+    : (sort = { sort: { title: 1 } });
+
+  db.Resource.find(where, null, sort)
     .populate("menu_item_id")
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));

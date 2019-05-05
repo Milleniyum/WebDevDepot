@@ -3,30 +3,38 @@ import React, { Component } from "react";
 import "./style.css";
 
 export default class Menu extends Component {
-  toggleMenu(id) {
+  toggleMenu(event, id, menuInfo) {
+    event.preventDefault();
     const toggle = document.getElementById("toggle-" + id);
     const menuList = document.getElementById("menu-list-" + id);
-    if (toggle.classList.contains("fa-chevron-up")) {
-      toggle.classList.remove("fa-chevron-up");
-      toggle.classList.add("fa-chevron-down");
-      if (menuList) menuList.classList.remove("is-hidden");
-    } else {
-      toggle.classList.remove("fa-chevron-down");
-      toggle.classList.add("fa-chevron-up");
-      if (menuList) menuList.classList.add("is-hidden");
+    if (toggle) {
+      if (toggle.classList.contains("fa-chevron-up")) {
+        toggle.classList.remove("fa-chevron-up");
+        toggle.classList.add("fa-chevron-down");
+        if (menuList) menuList.classList.remove("is-hidden");
+      } else {
+        toggle.classList.remove("fa-chevron-down");
+        toggle.classList.add("fa-chevron-up");
+        if (menuList) menuList.classList.add("is-hidden");
+      }
     }
+
+    this.clickMenu(event, id, menuInfo);
   }
 
-  clickMenu = (event, id) => {
+  clickMenu = (event, id, menuInfo) => {
     event.preventDefault();
     const els = document.getElementsByClassName("menu-item");
     for (let i = 0; i < els.length; i++) {
       els[i].classList.remove("is-active");
-    };
-    event.target.classList.add("is-active");
+    }
+
+    //use id instead of event.target.classList so that the section title will be active if it was the toggle the user clicked
+    document.getElementById("menu-item-" + id).classList.add("is-active");
 
     this.props.getResources(id);
-  }
+    this.props.populateHero(menuInfo);
+  };
 
   render() {
     return (
@@ -45,17 +53,28 @@ export default class Menu extends Component {
               <div key={menuItem._id}>
                 <p className="menu-label">
                   <a
-                    className=" menu-item"
+                    className={"menu-item"}
+                    id={"menu-item-" + menuItem._id}
                     onClick={event =>
-                      this.clickMenu(event, menuItem._id)
+                      this.toggleMenu(event, menuItem._id, {
+                        title: menuItem.title,
+                        description: menuItem.description,
+                        source: menuItem.source
+                      })
                     }
                     href="/"
                   >
                     {menuItem.title}
                   </a>
-                  {(menuItem.items ? (
+                  {menuItem.items ? (
                     <span
-                      onClick={event => this.toggleMenu(menuItem._id)}
+                      onClick={event =>
+                        this.toggleMenu(event, menuItem._id, {
+                          title: menuItem.title,
+                          description: menuItem.description,
+                          source: menuItem.source
+                        })
+                      }
                       className="icon"
                     >
                       <i
@@ -63,7 +82,9 @@ export default class Menu extends Component {
                         id={"toggle-" + menuItem._id}
                       />
                     </span>
-                  ) : "")}
+                  ) : (
+                    ""
+                  )}
                 </p>
                 {menuItem.items ? (
                   <UL
@@ -71,13 +92,13 @@ export default class Menu extends Component {
                     level={1}
                     clickMenu={this.clickMenu}
                     menuItems={menuItem.items}
+                    path={menuItem.title}
                   />
                 ) : (
                   ""
                 )}
               </div>
             ))}
-
           </aside>
         </div>
       </div>
@@ -98,6 +119,7 @@ function UL(props) {
           level={props.level}
           menuItem={menuItem}
           clickMenu={props.clickMenu}
+          path={props.path}
         />
       ))}
     </ul>
@@ -113,8 +135,16 @@ function LI(props) {
           : "menu-child"
       }
     >
-      <a className="menu-item"
-        onClick={event => props.clickMenu(event, props.menuItem._id)}
+      <a
+        className="menu-item"
+        id={"menu-item-" + props.menuItem._id}
+        onClick={event =>
+          props.clickMenu(event, props.menuItem._id, {
+            title: props.path + " > " + props.menuItem.title,
+            description: props.menuItem.description,
+            source: props.menuItem.source
+          })
+        }
         href="/"
       >
         {props.menuItem.title}
@@ -124,6 +154,7 @@ function LI(props) {
           level={2}
           clickMenu={props.clickMenu}
           menuItems={props.menuItem.items}
+          path={props.path + " > " + props.menuItem.title}
         />
       ) : (
         ""
