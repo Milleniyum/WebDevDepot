@@ -7,7 +7,7 @@ import API from "../utils/API";
 
 class Main extends Component {
   state = {
-    title: "Welcome",
+    title: "Welcome to Web Dev Depot",
     description: "",
     source: "",
     menuItems: [],
@@ -90,6 +90,7 @@ class Main extends Component {
         <Wrapper marginTop="55px" marginLeft="216px" heightOffset="65px">
           <Hero
             align="left"
+            margin="0"
             theme="is-dark"
             title={this.state.title}
             titlesize="1.5rem"

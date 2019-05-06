@@ -2,7 +2,7 @@ body {
   padding-right: 5px;
   box-sizing: border-box;
   background-color: black;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 html {
@@ -11,4 +11,8 @@ html {
   overflow: hidden;
 }
 
-
+/* placed here for Admin pages */
+.table tr.is-selected {
+  background-color: #4dc4e2;
+  color: black;
+}

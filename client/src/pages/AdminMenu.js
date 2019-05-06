@@ -94,6 +94,17 @@ class AdminMenu extends Component {
     });
   };
 
+  handleDoubleClick = rowInfo => {
+    const els = document.getElementsByClassName("row-item");
+    const row = document.getElementById("row-" + rowInfo.updateId);
+    for (let i = 0; i < els.length; i++) {
+      els[i].classList.remove("is-selected");
+    }
+    row.classList.add("is-selected");
+
+    this.setState(rowInfo);
+  };
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -153,13 +164,13 @@ class AdminMenu extends Component {
                   placeholder="Menu Description"
                 />
 
-                  <Input
-                    label="Source"
-                    value={this.state.source}
-                    onChange={this.handleInputChange}
-                    name="source"
-                    placeholder="Description Source"
-                  />
+                <Input
+                  label="Source"
+                  value={this.state.source}
+                  onChange={this.handleInputChange}
+                  name="source"
+                  placeholder="Description Source"
+                />
 
                 <div className="field">
                   <FormBtn
@@ -191,8 +202,10 @@ class AdminMenu extends Component {
                   {this.state.menuItems.map(item => (
                     <tr
                       key={item._id}
+                      id={"row-" + item._id}
+                      className="row-item"
                       onDoubleClick={() =>
-                        this.setState({
+                        this.handleDoubleClick({
                           updateId: item._id,
                           updatePos: item.position,
                           position: item.position,

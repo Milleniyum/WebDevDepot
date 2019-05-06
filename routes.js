@@ -48,15 +48,17 @@ router.get("/api/logout", function(req, res) {
   res.json({ message: "logged out" });
 });
 
-router.get("/api/user", function (req, res) {
+router.get("/api/user", function(req, res) {
   if (req.query.username) {
-    db.User.find({ username: req.query.username }).then(result => {
-      res.json({ length: result.length });
-    }).catch(err => res.status(422).json(err));
+    db.User.find({ username: req.query.username })
+      .then(result => {
+        res.json({ length: result.length });
+      })
+      .catch(err => res.status(422).json(err));
   } else {
-    res.json({message: "no username entered for query"})
-  };
-})
+    res.json({ message: "no username entered for query" });
+  }
+});
 
 router.get("/api/menu", function(req, res) {
   db.MenuItem.find({}, null, { sort: { position: 1 } })
