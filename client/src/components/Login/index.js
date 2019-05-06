@@ -13,6 +13,7 @@ class Login extends Component {
 
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown);
+    document.getElementById("login-username").focus();
   }
 
   componentWillUnmount() {
@@ -43,7 +44,6 @@ class Login extends Component {
             error: res.data.message
           });
         } else {
-          console.log("login successful");
           this.resetForm();
           this.props.isAuthorized();
           this.props.closeLogin();
@@ -75,14 +75,9 @@ class Login extends Component {
       <Modal title="Login" closeForm={this.cancel}>
         <form
           className="login-form"
-          style={{
-            backgroundColor: "white",
-            borderRadius: "6px",
-            width: "330px",
-            padding: "10px"
-          }}
         >
           <Input
+            id="login-username"
             name="username"
             value={this.state.username}
             onChange={this.handleInputChange}

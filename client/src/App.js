@@ -8,6 +8,7 @@ import Comments from "./pages/Comments";
 import AdminMenu from "./pages/AdminMenu";
 import AdminResources from "./pages/AdminResources";
 import AdminSuggestions from "./pages/AdminSuggestions";
+import NotFound from "./pages/404";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
 import API from "./utils/API";
@@ -35,9 +36,6 @@ class App extends Component {
     this.setState({
       isAuth: false,
       isAdmin: false,
-      activeTab: "",
-      showReg: false,
-      showLogin: false,
       username: "",
       likes: [],
       favorites: [],
@@ -49,6 +47,8 @@ class App extends Component {
     API.isAuthorized()
       .then(res => {
         if (res.data.message) {
+          if (window.location.href.includes("/admin"))
+            window.location.href = window.location.origin;
           this.resetState();
         } else {
           this.setState({
@@ -75,13 +75,15 @@ class App extends Component {
     this.setState({ showLogin: true });
   };
 
-  logout = () => {
-    API.logout().then(res => {
-      console.log(res);
-      this.resetState();
-    }).catch(err => { 
-      console.log();
-    })
+  logout = event => {
+    event.preventDefault();
+    API.logout()
+      .then(res => {
+        this.isAuthorized();
+      })
+      .catch(err => {
+        this.isAuthorized();
+      });
   };
 
   closeRegistration = form => {
@@ -109,28 +111,53 @@ class App extends Component {
           showLogin={this.showLogin}
           logout={this.logout}
         />
-        <Route exact path="/" render={props => <Main />} />
-        <Route exact path="/favorites" component={Favorites} />
-        <Route exact path="/comments" component={Comments} />
-        <Route
-          path="/admin"
-          render={props => <Tabs active={this.state.activeTab} />}
-        />
         <Route
           exact
-          path="/admin/menu"
-          render={props => <AdminMenu setTab={this.setTab} />}
+          path="/"
+          render={props => (
+            <Main
+              likes={this.state.likes}
+              favorites={this.state.favorites}
+              clicks={this.state.clicks}
+              username={this.state.username}
+              isAuthorized={this.isAuthorized}
+              showLogin={this.showLogin}
+            />
+          )}
         />
-        <Route
-          exact
-          path="/admin/resources"
-          render={props => <AdminResources setTab={this.setTab} />}
-        />
-        <Route
-          exact
-          path="/admin/suggestions"
-          render={props => <AdminSuggestions setTab={this.setTab} />}
-        />
+        {this.state.isAuth ? (
+          <React.Fragment>
+            <Route exact path="/favorites" component={Favorites} />
+            <Route exact path="/comments" component={Comments} />
+          </React.Fragment>
+        ) : (
+          ""
+        )}
+        {this.state.isAdmin ? (
+          <React.Fragment>
+            <Route
+              path="/admin"
+              render={props => <Tabs active={this.state.activeTab} />}
+            />
+            <Route
+              exact
+              path="/admin/menu"
+              render={props => <AdminMenu setTab={this.setTab} />}
+            />
+            <Route
+              exact
+              path="/admin/resources"
+              render={props => <AdminResources setTab={this.setTab} />}
+            />
+            <Route
+              exact
+              path="/admin/suggestions"
+              render={props => <AdminSuggestions setTab={this.setTab} />}
+            />
+          </React.Fragment>
+        ) : (
+          ""
+        )}
 
         {this.state.showReg ? (
           <Registration
@@ -148,6 +175,8 @@ class App extends Component {
         ) : (
           ""
         )}
+
+        <Route path="*" component={NotFound} />
       </Router>
     );
   }

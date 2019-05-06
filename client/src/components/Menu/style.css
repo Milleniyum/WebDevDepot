@@ -60,6 +60,11 @@
     padding: 2px;
   }
 
+  .search-box input {
+    border: 1px solid black;
+    color: black;
+  }
+
   .sidebar .field {
     margin-bottom: 0!important;
   }

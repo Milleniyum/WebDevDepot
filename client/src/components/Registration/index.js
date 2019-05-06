@@ -16,12 +16,13 @@ class Registration extends Component {
     validCF: false,
     error: "",
     // eslint-disable-next-line
-    reg: RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    reg: new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
   };
 
-  componentDidMount(){
+  componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown);
-  };
+    document.getElementById("registration-username").focus();
+  }
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyDown);
@@ -48,8 +49,15 @@ class Registration extends Component {
   validateField = (name, value) => {
     switch (name) {
       case "username":
-        //API.validateUsername
-        this.setState({ validUN: true });
+        API.availableUN(value)
+          .then(res => {
+            res.data.length < 1
+              ? this.setState({ validUN: true })
+              : this.setState({ validUN: false });
+          })
+          .catch(err => {
+            console.log(err);
+          });
         break;
       case "email":
         this.setState({ validEM: this.state.reg.test(value) });
@@ -85,7 +93,8 @@ class Registration extends Component {
         } else {
           console.log("registration successful");
           this.resetForm();
-          //add code to close modal
+          this.props.isAuthorized();
+          this.props.closeRegistration();
         }
       })
       .catch(err => {
@@ -116,13 +125,9 @@ class Registration extends Component {
   render() {
     return (
       <Modal title="Registration" closeForm={this.cancel}>
-        <form
-          className="register-form"
-          style={{
-            padding: "10px"
-          }}
-        >
+        <form className="register-form">
           <Input
+            id="registration-username"
             name="username"
             value={this.state.username}
             onChange={this.handleInputChange}

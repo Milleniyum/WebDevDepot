@@ -13,6 +13,9 @@ export default {
   logout: function () {
     return axios.get("/api/logout");
   },
+  availableUN: function (username) {
+    return axios.get("/api/user/?username=" + username);
+  },
 
   //Menu Items
   getMenuItems: function () {
@@ -41,5 +44,14 @@ export default {
   },
   deleteResource: function (id) {
     return axios.delete("/api/resource", { data: id });
+  },
+  clickedResource: function (id) {
+    return axios.put("/api/resource/clicked", id)
+  },
+  clickedFavorite: function (resource) {
+    return axios.put("/api/resource/favorite", resource);
+  },
+  clickedLike: function (resource) {
+    return axios.put("/api/resource/like", resource);
   }
 };

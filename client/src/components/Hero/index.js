@@ -8,7 +8,7 @@ function Hero(props) {
     <section className={"hero " + props.theme}>
       <div className="hero-body">
         <div className="container" style={{textAlign: props.align}}>
-          <h1 className="title">{props.title}</h1>
+          <h1 style={{fontSize: (props.titlesize ? props.titlesize : "")}} className="title">{props.title}</h1>
           <h2 className="subtitle">{props.description}</h2>
           {props.source ? <a href={props.source} target="_blank" rel="noopener noreferrer">
               {props.source}

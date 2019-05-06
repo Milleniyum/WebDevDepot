@@ -11,10 +11,7 @@ class Main extends Component {
     description: "",
     source: "",
     menuItems: [],
-    resources: [],
-    clicks: [],
-    favorites: [],
-    likes: []
+    resources: []
   };
 
   componentDidMount() {
@@ -74,13 +71,13 @@ class Main extends Component {
     });
   };
 
-  populateHero = (menuInfo) => {
+  populateHero = menuInfo => {
     this.setState({
       title: menuInfo.title,
       description: menuInfo.description,
       source: menuInfo.source
     });
-  }
+  };
 
   render() {
     return (
@@ -95,6 +92,7 @@ class Main extends Component {
             align="left"
             theme="is-dark"
             title={this.state.title}
+            titlesize="1.5rem"
             description={this.state.description}
             source={this.state.source}
           />
@@ -104,9 +102,12 @@ class Main extends Component {
               id={resource._id}
               title={resource.title}
               url={resource.url}
-              clicked={this.state.clicks.indexOf(resource._id) > -1}
-              favorite={this.state.favorites.indexOf(resource._id) > -1}
-              liked={this.state.likes.indexOf(resource._id) > -1}
+              likes={resource.likes}
+              liked={this.props.likes.indexOf(resource._id) > -1}
+              favorited={this.props.favorites.indexOf(resource._id) > -1}
+              clicked={this.props.clicks.indexOf(resource._id) > -1}
+              isAuthorized={this.props.isAuthorized}
+              showLogin={this.props.showLogin}
             />
           ))}
         </Wrapper>

@@ -1,20 +1,39 @@
 import React, { Component } from "react";
-import { a } from "react-router-dom";
+import API from "../../utils/API";
 import "./style.css";
 
 class Resource extends Component {
-  state = {
-    clicked: false,
-    favorite: false,
-    liked: false
+
+  clickedCheckIcon = event => {
+    event.preventDefault();
   };
 
-  componentDidMount() {
-    this.setState({
-      clicked: this.props.clicked,
-      favorite: this.props.favorite,
-      liked: this.props.liked
-    });
+  clickedResource = event => {
+    if (!this.props.clicked) {
+      API.clickedResource({ id: this.props.id }).then(res => {
+        this.props.isAuthorized();
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  };
+
+  clickedFavorite = event => {
+    event.preventDefault();
+    API.clickedFavorite({ id: this.props.id, selected: this.props.favorited }).then(res => {
+      res.data.message ? this.props.showLogin() : this.props.isAuthorized();
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  clickedLike = event => {
+    event.preventDefault();
+    API.clickedLike({ id: this.props.id, selected: this.props.liked }).then(res => {
+      res.data.message ? this.props.showLogin() : this.props.isAuthorized();
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   render() {
@@ -22,36 +41,38 @@ class Resource extends Component {
       <div className="card">
         <div className="card-content">
           <p>
-            <a href={this.props.url} target="_blank" rel="noopener noreferrer">
+            <a onClick={this.clickedResource} href={this.props.url} target="_blank" rel="noopener noreferrer">
               {this.props.title}
             </a>
           </p>
         </div>
         <footer className="card-footer">
-          <a href="/" className="card-footer-item">
+          <a onClick={this.clickedCheckIcon} href="/" className="card-footer-item">
             <span className="icon">
               <i
+                title="seen"
                 className={
-                  this.state.clicked ? "fas fa-check clicked" : "fas fa-check"
+                  this.props.clicked ? "fas fa-check clicked" : "fas fa-check"
                 }
               />
             </span>
           </a>
-          <a href="/" className="card-footer-item">
+          <a onClick={this.clickedFavorite} href="/" className="card-footer-item">
             <span className="icon">
               <i
+                title="favorite"
                 className={
-                  this.state.favorite ? "fas fa-star favorited" : "far fa-star"
+                  this.props.favorited ? "fas fa-star favorited" : "far fa-star"
                 }
               />
             </span>
           </a>
-          <a href="/" className="card-footer-item">
+          <a onClick={this.clickedLike} href="/" className="card-footer-item">
             <span className="icon">
               <i
-                title="likes"
+                title={this.props.likes}
                 className={
-                  this.state.liked
+                  this.props.liked
                     ? "fas fa-thumbs-up liked"
                     : "far fa-thumbs-up"
                 }

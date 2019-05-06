@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const db = require("./models");
+var isAuthenticated = require("./config/middleware/isAuthenticated");
 
 router.post("/api/register", function(req, res) {
   console.log("registering user");
@@ -38,17 +39,24 @@ router.post("/api/login", function(req, res, next) {
   })(req, res, next);
 });
 
-router.get("/api/authorized", function(req, res) {
-  if (req.isAuthenticated()) {
-    return res.json(req.user);
-  }
-  res.json({ message: "no auth" });
+router.get("/api/authorized", isAuthenticated, function(req, res) {
+  res.json(req.user);
 });
 
-router.get("/api/logout", function(req, res){
+router.get("/api/logout", function(req, res) {
   req.logout();
   res.json({ message: "logged out" });
 });
+
+router.get("/api/user", function (req, res) {
+  if (req.query.username) {
+    db.User.find({ username: req.query.username }).then(result => {
+      res.json({ length: result.length });
+    }).catch(err => res.status(422).json(err));
+  } else {
+    res.json({message: "no username entered for query"})
+  };
+})
 
 router.get("/api/menu", function(req, res) {
   db.MenuItem.find({}, null, { sort: { position: 1 } })
@@ -112,14 +120,9 @@ router.delete("/api/menu", function(req, res) {
 });
 
 router.get("/api/resource/:id", function(req, res) {
-  let where, sort;
-  req.params.id != "noid"
-    ? (where = { menu_item_id: req.params.id })
-    : (where = {});
-  req.params.id != "noid" > 0
-    ? (sort = { sort: { likes: -1 } })
-    : (sort = { sort: { title: 1 } });
-
+  const where = req.params.id != "noid" ? { menu_item_id: req.params.id } : {};
+  const sort =
+    req.params.id != "noid" ? { sort: { likes: -1 } } : { sort: { title: 1 } };
   db.Resource.find(where, null, sort)
     .populate("menu_item_id")
     .then(result => res.json(result))
@@ -136,6 +139,43 @@ router.put("/api/resource", function(req, res) {
   console.log(req.body.data.menu_item_id);
   db.Resource.findOneAndUpdate({ _id: req.body.id }, req.body.data)
     .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.put("/api/resource/clicked", isAuthenticated, function(req, res) {
+  db.User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $addToSet: { clicks: req.body.id } }
+  )
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => res.status(422).json(err));
+});
+
+router.put("/api/resource/favorite", isAuthenticated, function(req, res) {
+  const set = req.body.selected
+    ? { $pull: { favorites: req.body.id } }
+    : { $addToSet: { favorites: req.body.id } };
+  db.User.findOneAndUpdate({ _id: req.user._id }, set)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => res.status(422).json(err));
+});
+
+router.put("/api/resource/like", isAuthenticated, function(req, res) {
+  const set = req.body.selected
+    ? { $pull: { likes: req.body.id } }
+    : { $addToSet: { likes: req.body.id } };
+  const inc = req.body.selected ? -1 : 1;
+  Promise.all([
+    db.User.findOneAndUpdate({ _id: req.user._id }, set),
+    db.Resource.findOneAndUpdate({ _id: req.body.id }, { $inc: { likes: inc } })
+  ])
+    .then(result => {
+      res.json(result);
+    })
     .catch(err => res.status(422).json(err));
 });
 
