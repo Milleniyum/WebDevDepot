@@ -35,7 +35,7 @@ class Login extends Component {
   login = event => {
     event.preventDefault();
     API.login({
-      username: this.state.username,
+      username: this.state.username.toLowerCase(),
       password: this.state.password
     })
       .then(res => {
