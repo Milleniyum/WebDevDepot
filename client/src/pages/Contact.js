@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
 
-class Comments extends Component {
+class Contact extends Component {
   state = {};
 
   render() {
@@ -15,4 +15,4 @@ class Comments extends Component {
   }
 }
 
-export default Comments;
+export default Contact;

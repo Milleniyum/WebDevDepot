@@ -53,5 +53,8 @@ export default {
   },
   clickedLike: function (resource) {
     return axios.put("/api/resource/like", resource);
+  },
+  getFavorites: function () {
+    return axios.get("/api/favorites");
   }
 };

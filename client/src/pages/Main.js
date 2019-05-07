@@ -107,7 +107,7 @@ class Main extends Component {
               liked={this.props.likes.indexOf(resource._id) > -1}
               favorited={this.props.favorites.indexOf(resource._id) > -1}
               clicked={this.props.clicks.indexOf(resource._id) > -1}
-              isAuthorized={this.props.isAuthorized}
+              update={this.props.isAuthorized}
               showLogin={this.props.showLogin}
             />
           ))}

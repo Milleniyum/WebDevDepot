@@ -49,15 +49,17 @@ class Registration extends Component {
   validateField = (name, value) => {
     switch (name) {
       case "username":
-        API.availableUN(value)
-          .then(res => {
-            res.data.length < 1
-              ? this.setState({ validUN: true })
-              : this.setState({ validUN: false });
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        if (value.length > 7) {
+          API.availableUN(value.toLowerCase())
+            .then(res => {
+              res.data.length < 1
+                ? this.setState({ validUN: true })
+                : this.setState({ validUN: false });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else { this.setState({ validUN: false }) };
         break;
       case "email":
         this.setState({ validEM: this.state.reg.test(value) });
@@ -67,7 +69,6 @@ class Registration extends Component {
           validPW: value.length > 7,
           validCF: value.length > 7 && value === this.state.confirm
         });
-
         break;
       case "confirm":
         this.setState({
@@ -81,7 +82,7 @@ class Registration extends Component {
   register = event => {
     event.preventDefault();
     API.register({
-      username: this.state.username,
+      username: this.state.username.toLowerCase(),
       email: this.state.email,
       password: this.state.password
     })
@@ -134,7 +135,7 @@ class Registration extends Component {
             label="Username"
             controls="has-icons-left has-icons-right"
             inputs={this.state.validUN ? "is-success" : "is-danger"}
-            placeholder="Username"
+            placeholder="at least 8 characters"
             lefticon="fas fa-user"
             righticon={
               this.state.validUN

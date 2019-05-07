@@ -11,7 +11,7 @@ class Resource extends Component {
   clickedResource = event => {
     if (!this.props.clicked) {
       API.clickedResource({ id: this.props.id }).then(res => {
-        this.props.isAuthorized();
+        this.props.update();
       }).catch(err => {
         console.log(err);
       })
@@ -21,7 +21,7 @@ class Resource extends Component {
   clickedFavorite = event => {
     event.preventDefault();
     API.clickedFavorite({ id: this.props.id, selected: this.props.favorited }).then(res => {
-      res.data.message ? this.props.showLogin() : this.props.isAuthorized();
+      res.data.message ? this.props.showLogin() : this.props.update();
     }).catch(err => {
       console.log(err);
     })
@@ -30,7 +30,7 @@ class Resource extends Component {
   clickedLike = event => {
     event.preventDefault();
     API.clickedLike({ id: this.props.id, selected: this.props.liked }).then(res => {
-      res.data.message ? this.props.showLogin() : this.props.isAuthorized();
+      res.data.message ? this.props.showLogin() : this.props.update();
     }).catch(err => {
       console.log(err);
     })
@@ -80,7 +80,7 @@ class Resource extends Component {
             </span>
           </a>
         </footer>
-      </div>
+        </div>
     );
   }
 }

@@ -187,6 +187,13 @@ router.delete("/api/resource", function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
+router.get("/api/favorites", isAuthenticated, function (req, res) {
+  db.User.find({ _id: req.user._id })
+    .populate("favorites")
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+})
+
 // If no API routes are hit, send the React app
 router.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));

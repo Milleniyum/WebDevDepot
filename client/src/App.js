@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Tabs from "./components/Tabs";
 import Main from "./pages/Main";
 import Favorites from "./pages/Favorites";
-import Comments from "./pages/Comments";
+import Contact from "./pages/Contact";
 import AdminMenu from "./pages/AdminMenu";
 import AdminResources from "./pages/AdminResources";
 import AdminSuggestions from "./pages/AdminSuggestions";
@@ -48,10 +48,6 @@ class App extends Component {
     API.isAuthorized()
       .then(res => {
         if (res.data.message) {
-          this.state.authSites.forEach(site => {
-            if (window.location.href.includes(site))
-              window.location.href = window.location.origin;
-          });
           this.resetState();
         } else {
           this.setState({
@@ -115,10 +111,15 @@ class App extends Component {
             showLogin={this.showLogin}
             logout={this.logout}
           />
-          <Route
-            path="/admin"
-            render={props => <Tabs active={this.state.activeTab} />}
-          />
+          {this.state.isAdmin ? (
+            <Route
+              path="/admin"
+              render={props => <Tabs active={this.state.activeTab} />}
+            />
+          ) : (
+            ""
+          )}
+
           <Switch>
             <Route
               exact
@@ -134,28 +135,69 @@ class App extends Component {
                 />
               )}
             />
-            <Route exact path="/favorites" component={Favorites} />
-            <Route exact path="/comments" component={Comments} />
+
+            <Route
+              exact
+              path="/favorites"
+              render={props =>
+                !this.state.isAuth ? (
+                  <NotFound />
+                ) : (
+                  <Favorites
+                    likes={this.state.likes}
+                    favorites={this.state.favorites}
+                    clicks={this.state.clicks}
+                    isAuthorized={this.isAuthorized}
+                  />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/contact"
+              render={props =>
+                !this.state.isAuth ? <NotFound /> : <Contact />
+              }
+            />
 
             <Route
               exact
               path="/admin/menu"
-              render={props => <AdminMenu setTab={this.setTab} />}
+              render={props =>
+                !this.state.isAdmin ? (
+                  <NotFound />
+                ) : (
+                  <AdminMenu setTab={this.setTab} />
+                )
+              }
             />
             <Route
               exact
               path="/admin/resources"
-              render={props => <AdminResources setTab={this.setTab} />}
+              render={props =>
+                !this.state.isAdmin ? (
+                  <NotFound />
+                ) : (
+                  <AdminResources setTab={this.setTab} />
+                )
+              }
             />
+
             <Route
               exact
               path="/admin/suggestions"
-              render={props => <AdminSuggestions setTab={this.setTab} />}
+              render={props =>
+                !this.state.isAdmin ? (
+                  <NotFound />
+                ) : (
+                  <AdminSuggestions setTab={this.setTab} />
+                )
+              }
             />
-            {window.location.pathname !== "/admin" ? (
-              <Route component={NotFound} />
-            ) : (
+            {window.location.pathname === "/admin" && this.state.isAdmin ? (
               ""
+            ) : (
+              <Route component={NotFound} />
             )}
           </Switch>
         </Router>

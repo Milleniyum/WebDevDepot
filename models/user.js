@@ -4,7 +4,8 @@ const passportLocalMongoose = require('passport-local-mongoose');
 
 const User = new Schema({
     email: { type: String, required: true },
-    level: {type: Number, required: true, default: 1},
+    level: { type: Number, required: true, default: 1 },
+    created: {type: Date, required: true, default: Date.now()},
     likes: [{
         type: Schema.Types.ObjectId,
         ref: "Resource"

@@ -44,7 +44,7 @@ function Navbar(props) {
 
         <div className="navbar-end">
           {props.isAuth ?
-            <React.Fragment><Link className="navbar-item" to="/comments">
+            <React.Fragment><Link className="navbar-item" to="/contact">
               <span className="icon">
                 <i className="fas fa-comment" style={{ color: "white" }} />
               </span>
