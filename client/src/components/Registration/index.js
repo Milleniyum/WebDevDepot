@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Input, FormBtn } from "../Form";
+import FocusInput from "../FocusInput";
 import Modal from "../Modal";
 import "./style.css";
 import API from "../../utils/API";
@@ -21,7 +22,6 @@ class Registration extends Component {
 
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown);
-    document.getElementById("registration-username").focus();
   }
 
   componentWillUnmount() {
@@ -127,14 +127,13 @@ class Registration extends Component {
     return (
       <Modal title="Registration" closeForm={this.cancel}>
         <form className="register-form">
-          <Input
-            id="registration-username"
+          <FocusInput
             name="username"
             value={this.state.username}
             onChange={this.handleInputChange}
             label="Username"
             controls="has-icons-left has-icons-right"
-            inputs={this.state.validUN ? "is-success" : "is-danger"}
+            classes={this.state.validUN ? "is-success" : "is-danger"}
             placeholder="at least 8 characters"
             lefticon="fas fa-user"
             righticon={
@@ -156,7 +155,7 @@ class Registration extends Component {
             onChange={this.handleInputChange}
             label="Email"
             controls="has-icons-left has-icons-right"
-            inputs={this.state.validEM ? "is-success" : "is-danger"}
+            classes={this.state.validEM ? "is-success" : "is-danger"}
             type="email"
             placeholder="Email"
             lefticon="fas fa-envelope"
@@ -177,7 +176,7 @@ class Registration extends Component {
             onChange={this.handleInputChange}
             label="Password"
             controls="has-icons-right"
-            inputs={this.state.validPW ? "is-success" : "is-danger"}
+            classes={this.state.validPW ? "is-success" : "is-danger"}
             type="password"
             placeholder="at least 8 characters"
             righticon={
@@ -199,7 +198,7 @@ class Registration extends Component {
             onChange={this.handleInputChange}
             label="Confirm Password"
             controls="has-icons-right"
-            inputs={this.state.validCF ? "is-success" : "is-danger"}
+            classes={this.state.validCF ? "is-success" : "is-danger"}
             type="password"
             righticon={
               this.state.validCF

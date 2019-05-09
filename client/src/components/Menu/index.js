@@ -1,62 +1,83 @@
 import React, { Component } from "react";
-// import UL from "../UL";
+import FocusInput from "../FocusInput";
 import "./style.css";
 
 export default class Menu extends Component {
+  state = {
+    selectedMenuItem: "",
+    openSections: [],
+    search: ""
+  };
+
   toggleMenu(event, id, menuInfo) {
     event.preventDefault();
-    const toggle = document.getElementById("toggle-" + id);
     const menuList = document.getElementById("menu-list-" + id);
-    if (toggle) {
-      if (toggle.classList.contains("fa-chevron-up")) {
-        toggle.classList.remove("fa-chevron-up");
-        toggle.classList.add("fa-chevron-down");
-        if (menuList) menuList.classList.remove("is-hidden");
-      } else {
-        toggle.classList.remove("fa-chevron-down");
-        toggle.classList.add("fa-chevron-up");
-        if (menuList) menuList.classList.add("is-hidden");
-      }
-    }
+
+    if (menuList) menuList.classList.toggle("is-hidden");
 
     this.clickMenu(event, id, menuInfo);
   }
 
-  clickMenu = (event, id, menuInfo) => {
+  handleMenuClick = (event, section, id, menuInfo) => {
     event.preventDefault();
-    const els = document.getElementsByClassName("menu-item");
-    for (let i = 0; i < els.length; i++) {
-      els[i].classList.remove("is-active");
+    if (section) {
+      let openSections;
+      if (this.state.openSections.indexOf(id) === -1) {
+        openSections = this.state.openSections.map(el => el);
+        openSections.push(id);
+      } else {
+        openSections = this.state.openSections.filter(el => el !== id);
+      }
+      this.setState({ openSections: openSections });
     }
 
-    //use id instead of event.target.classList so that the section title will be active if it was the toggle the user clicked
-    document.getElementById("menu-item-" + id).classList.add("is-active");
-
+    this.setState({ selectedMenuItem: id });
     this.props.getResources(id);
     this.props.populateHero(menuInfo);
+  };
+
+  handleKeyDown = event => {
+    if (event.key === "Enter" && this.state.search.trim() !== "") {
+      this.props.searchResources(this.state.search.toLowerCase());
+    }
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+
+    if (event.key === "Enter") this.searchResources();
   };
 
   render() {
     return (
       <div className="sidebar">
-        <div className="field search-box">
-          <p className="control has-icons-right">
-            <input className="input" type="text" placeholder="Search" />
-            <span className="icon is-small is-right">
-              <i className="fas fa-search" />
-            </span>
-          </p>
-        </div>
+        <FocusInput
+          name="search"
+          value={this.state.search}
+          onChange={this.handleInputChange}
+          onKeyDown={this.handleKeyDown}
+          fields="search-box"
+          controls="has-icons-right"
+          placeholder="Search Tags"
+          righticon="fas fa-search"
+        />
+
         <div className="menu-container">
           <aside className="menu">
             {this.props.menuItems.map(menuItem => (
               <div key={menuItem._id}>
                 <p className="menu-label">
                   <a
-                    className={"menu-item"}
-                    id={"menu-item-" + menuItem._id}
+                    className={
+                      this.state.selectedMenuItem === menuItem._id
+                        ? "is-active"
+                        : ""
+                    }
                     onClick={event =>
-                      this.toggleMenu(event, menuItem._id, {
+                      this.handleMenuClick(event, true, menuItem._id, {
                         title: menuItem.title,
                         description: menuItem.description,
                         source: menuItem.source
@@ -66,31 +87,14 @@ export default class Menu extends Component {
                   >
                     {menuItem.title}
                   </a>
-                  {menuItem.items ? (
-                    <span
-                      onClick={event =>
-                        this.toggleMenu(event, menuItem._id, {
-                          title: menuItem.title,
-                          description: menuItem.description,
-                          source: menuItem.source
-                        })
-                      }
-                      className="icon"
-                    >
-                      <i
-                        className="fa fa-chevron-up"
-                        id={"toggle-" + menuItem._id}
-                      />
-                    </span>
-                  ) : (
-                    ""
-                  )}
                 </p>
                 {menuItem.items ? (
                   <UL
-                    toggleId={menuItem._id}
                     level={1}
-                    clickMenu={this.clickMenu}
+                    sectionId={menuItem._id}
+                    openSections={this.state.openSections}
+                    selectedMenuItem={this.state.selectedMenuItem}
+                    handleMenuClick={this.handleMenuClick}
                     menuItems={menuItem.items}
                     path={menuItem.title}
                   />
@@ -109,16 +113,20 @@ export default class Menu extends Component {
 function UL(props) {
   return (
     <ul
-      className={"menu-list " + (props.level === 1 ? "is-hidden" : "")}
-      id={"menu-list-" + props.toggleId}
+      className={
+        "menu-list " +
+        (props.level === 1 && props.openSections.indexOf(props.sectionId) === -1
+          ? "is-hidden"
+          : "")
+      }
     >
       {props.menuItems.map(menuItem => (
         <LI
           key={menuItem._id}
-          id={menuItem._id}
           level={props.level}
           menuItem={menuItem}
-          clickMenu={props.clickMenu}
+          handleMenuClick={props.handleMenuClick}
+          selectedMenuItem={props.selectedMenuItem}
           path={props.path}
         />
       ))}
@@ -136,11 +144,12 @@ function LI(props) {
       }
     >
       <a
-        className="menu-item"
-        id={"menu-item-" + props.menuItem._id}
+        className={
+          props.selectedMenuItem === props.menuItem._id ? "is-active" : ""
+        }
         onClick={event =>
-          props.clickMenu(event, props.menuItem._id, {
-            title: props.path + " > " + props.menuItem.title,
+          props.handleMenuClick(event, false, props.menuItem._id, {
+            title: props.menuItem.title,
             description: props.menuItem.description,
             source: props.menuItem.source
           })
@@ -152,7 +161,8 @@ function LI(props) {
       {props.menuItem.items ? (
         <UL
           level={2}
-          clickMenu={props.clickMenu}
+          handleMenuClick={props.handleMenuClick}
+          selectedMenuItem={props.selectedMenuItem}
           menuItems={props.menuItem.items}
           path={props.path + " > " + props.menuItem.title}
         />

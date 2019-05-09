@@ -58,7 +58,7 @@ class AdminResources extends Component {
     const resource = {
       title: this.state.title,
       url: this.state.url,
-      tags: this.state.tags.split(",").map(tag => tag.trim())
+      tags: this.state.tags.toLowerCase().split(",").map(tag => tag.trim())
     };
     if (this.state.menuItem) resource.menu_item_id = this.state.menuItem;
     API.addResource(resource).then(res => {
@@ -74,7 +74,7 @@ class AdminResources extends Component {
       data: {
         title: this.state.title,
         url: this.state.url,
-        tags: this.state.tags.split(",").map(tag => tag.trim())
+        tags: this.state.tags.toLowerCase().split(",").map(tag => tag.trim())
       }
     };
     this.state.menuItem
@@ -175,6 +175,8 @@ class AdminResources extends Component {
                   {this.state.resources.map(resource => (
                     <tr
                       key={resource._id}
+                      style={{cursor: "pointer"}}
+                      className={this.state.updateId === resource._id ? "is-selected" : ""}
                       onDoubleClick={() =>
                         this.setState({
                           updateId: resource._id,

@@ -56,5 +56,8 @@ export default {
   },
   getFavorites: function () {
     return axios.get("/api/favorites");
+  },
+  searchResources: function (query) {
+    return axios.get("/api/search/?tags=" + query);
   }
 };

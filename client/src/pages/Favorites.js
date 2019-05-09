@@ -25,7 +25,7 @@ class Favorites extends Component {
 
   render() {
     return (
-        <Wrapper marginTop="55px" heightOffset="65px">
+        <Wrapper marginLeft="5px" marginTop="55px" heightOffset="60px">
         <Hero
             align="center"
             theme="is-dark"

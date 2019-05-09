@@ -7,7 +7,8 @@ export function Input(props) {
   const {
     label,
     controls,
-    inputs,
+    classes,
+    fields,
     type,
     lefticon,
     righticon,
@@ -16,11 +17,11 @@ export function Input(props) {
     ...other
   } = props;
   return (
-    <div className="field">
-      <label className="label">{label}</label>
+    <div className={"field " + (fields ? fields : "")}>
+      {label ? <label className="label">{label}</label> : ""}
       <div className={"control " + (controls ? controls : "")}>
         <input
-          className={"input " + (inputs ? inputs : "")}
+          className={"input " + (classes ? classes : "")}
           type={type ? type : "text"}
           {...other}
         />

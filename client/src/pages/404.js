@@ -8,18 +8,20 @@ class NotFound extends Component {
         type: "normal",
         message: "These are not the droids you're looking for..."
       },
+      {
+        type: "normal",
+        message: "You've reached Atlanta, GA. Thank you for calling."
+      },
       { type: "special", message: "Shame" },
-      { type: "normal", message: "Peek-a-boo I see you!" },
       {
-        type: "normal",
-        message:
-          "You sit before Web Dev Depot, cyber-born, first of it's name, breaker of code and maker of web developers!"
+        type: "special",
+        message: "Daenerys"
       },
       {
         type: "normal",
-        message: "Well this is awkward."
+        message: "awkward."
       },
-      {type: "special", message: "Pill"}
+      { type: "special", message: "Pill" }
     ],
     selected: ""
   };
@@ -31,11 +33,11 @@ class NotFound extends Component {
 
   bluePill = () => {
     this.setState({ selected: { type: "special", message: "Matrix" } });
-  }
+  };
 
   redPill = () => {
     window.location.href = window.location.origin;
-  }
+  };
 
   render() {
     return (
@@ -65,11 +67,43 @@ class NotFound extends Component {
             <p>{this.state.selected.message}</p>
           ) : (
             ""
-            )}
-            {this.state.selected.type === "special" &&
+          )}
+          {this.state.selected.type === "special" &&
           this.state.selected.message === "Pill" ? (
             <React.Fragment>
-              <p>Will it be the <div onClick={this.bluePill} style={{display:"inline", borderRadius: "16px", color: "white", backgroundColor: "blue", cursor: "pointer", padding: "4px"}}>blue pill</div> or the  <div onClick={this.redPill} style={{display:"inline", borderRadius: "16px", color: "white", backgroundColor: "red", cursor: "pointer", padding: "4px"}}>red pill</div> ?</p>
+              <p>
+                Will it be the{" "}
+                <label
+                  onClick={this.bluePill}
+                  style={{
+                    display: "inline",
+                    borderRadius: "16px",
+                    color: "white",
+                    backgroundColor: "blue",
+                    cursor: "pointer",
+                    padding: "4px",
+                    fontSize: "24px"
+                  }}
+                >
+                  blue pill
+                </label>{" "}
+                or the{" "}
+                <label
+                  onClick={this.redPill}
+                  style={{
+                    display: "inline",
+                    borderRadius: "16px",
+                    color: "white",
+                    backgroundColor: "red",
+                    cursor: "pointer",
+                    padding: "4px",
+                    fontSize: "24px"
+                  }}
+                >
+                  red pill
+                </label>{" "}
+                ?
+              </p>
             </React.Fragment>
           ) : (
             ""
@@ -86,19 +120,29 @@ class NotFound extends Component {
           {this.state.selected.type === "special" &&
           this.state.selected.message === "Shame" ? (
             <p>
-              <i class="fas fa-bell" style={{color: "gold"}}/>
+              <i className="fas fa-bell" style={{ color: "gold" }} />
               <br />
               Shame
               <br />
-              <i class="fas fa-bell" style={{color: "gold"}}/>
+              <i className="fas fa-bell" style={{ color: "gold" }} />
               <br />
               Shame
               <br />
-              <i class="fas fa-bell" style={{color: "gold"}}/>
+              <i className="fas fa-bell" style={{ color: "gold" }} />
               <br />
               Shame
               <br />
-              <i class="fas fa-bell" style={{color: "gold"}} />
+              <i className="fas fa-bell" style={{ color: "gold" }} />
+            </p>
+          ) : (
+            ""
+          )}
+
+          {this.state.selected.type === "special" &&
+          this.state.selected.message === "Daenerys" ? (
+            <p style={{fontFamily: "'Cinzel Decorative', cursive"}}>
+              You sit before Web Dev Depot, cyber-born, first of it's name,
+              breaker of code and maker of web developers!
             </p>
           ) : (
             ""

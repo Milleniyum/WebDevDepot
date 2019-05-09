@@ -74,8 +74,7 @@ class App extends Component {
     this.setState({ showLogin: true });
   };
 
-  logout = event => {
-    event.preventDefault();
+  logout = () => {
     API.logout()
       .then(res => {
         this.isAuthorized();

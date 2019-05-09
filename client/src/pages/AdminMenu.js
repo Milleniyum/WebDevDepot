@@ -95,13 +95,6 @@ class AdminMenu extends Component {
   };
 
   handleDoubleClick = rowInfo => {
-    const els = document.getElementsByClassName("row-item");
-    const row = document.getElementById("row-" + rowInfo.updateId);
-    for (let i = 0; i < els.length; i++) {
-      els[i].classList.remove("is-selected");
-    }
-    row.classList.add("is-selected");
-
     this.setState(rowInfo);
   };
 
@@ -202,8 +195,8 @@ class AdminMenu extends Component {
                   {this.state.menuItems.map(item => (
                     <tr
                       key={item._id}
-                      id={"row-" + item._id}
-                      className="row-item"
+                      style={{cursor: "pointer"}}
+                      className={this.state.updateId === item._id ? "is-selected" : ""}
                       onDoubleClick={() =>
                         this.handleDoubleClick({
                           updateId: item._id,

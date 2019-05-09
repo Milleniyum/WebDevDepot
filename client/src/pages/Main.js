@@ -68,8 +68,16 @@ class Main extends Component {
   getResources = id => {
     API.getResources(id).then(res => {
       this.setState({ resources: res.data });
-    });
+    }).catch(err => console.log(err));
   };
+
+  searchResources = query => {
+    API.searchResources(query).then(res => {
+      let filteredString = query.replace(/\W/g, " ").split(" ").filter(el => el !== "")
+      filteredString = filteredString.filter((el, index) => filteredString.indexOf(el) >= index).join(" ").toLowerCase();
+      this.setState({ selectedMenuItem: "", resources: res.data, title: "Search Results > " + filteredString, description: "resources found: " + res.data.length, source: "" });
+    }).catch(err => console.log(err));
+  }
 
   populateHero = menuInfo => {
     this.setState({
@@ -84,10 +92,11 @@ class Main extends Component {
       <div>
         <Menu
           getResources={this.getResources}
+          searchResources={this.searchResources}
           menuItems={this.state.menuItems}
           populateHero={this.populateHero}
         />
-        <Wrapper marginTop="55px" marginLeft="216px" heightOffset="65px">
+        <Wrapper marginTop="55px" marginLeft="216px" heightOffset="60px">
           <Hero
             align="left"
             margin="0"

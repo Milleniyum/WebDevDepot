@@ -122,6 +122,8 @@ router.delete("/api/menu", function(req, res) {
 });
 
 router.get("/api/resource/:id", function(req, res) {
+  //noid is used when the AdminResources page loads all resources
+  //id is provided when a menu item is clicked from the main page
   const where = req.params.id != "noid" ? { menu_item_id: req.params.id } : {};
   const sort =
     req.params.id != "noid" ? { sort: { likes: -1 } } : { sort: { title: 1 } };
@@ -129,6 +131,21 @@ router.get("/api/resource/:id", function(req, res) {
     .populate("menu_item_id")
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
+});
+
+router.get("/api/search", function(req, res) {
+  if (req.query.tags) {
+    //replace all non-alphanumeric characters with spaces
+    //split string at spaces into array
+    //filter out any empty strings from array
+    //filter out any duplicate words
+    let tags = req.query.tags.replace(/\W/g, " ").split(" ").filter(el => el !== "");
+    tags = tags.filter((el, index) => tags.indexOf(el) >= index);
+
+    db.Resource.find({ tags: { $in: tags } })
+      .then(result => res.json(result))
+      .catch(err => res.status(422).json(err));
+  }
 });
 
 router.post("/api/resource", function(req, res) {
@@ -187,12 +204,12 @@ router.delete("/api/resource", function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
-router.get("/api/favorites", isAuthenticated, function (req, res) {
+router.get("/api/favorites", isAuthenticated, function(req, res) {
   db.User.find({ _id: req.user._id })
     .populate("favorites")
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
-})
+});
 
 // If no API routes are hit, send the React app
 router.get("*", function(req, res) {

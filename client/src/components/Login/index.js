@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Input, FormBtn } from "../Form";
+import FocusInput from "../FocusInput";
 import Modal from "../Modal";
 import "./style.css";
 import API from "../../utils/API";
@@ -13,7 +14,6 @@ class Login extends Component {
 
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown);
-    document.getElementById("login-username").focus();
   }
 
   componentWillUnmount() {
@@ -73,11 +73,8 @@ class Login extends Component {
   render() {
     return (
       <Modal title="Login" closeForm={this.cancel}>
-        <form
-          className="login-form"
-        >
-          <Input
-            id="login-username"
+        <form className="login-form">
+          <FocusInput
             name="username"
             value={this.state.username}
             onChange={this.handleInputChange}
