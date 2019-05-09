@@ -40,7 +40,7 @@ class Navbar extends Component {
       >
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
-            <img src="/images/brand_logo.png" alt="logo" />
+            <img src="/images/brand_logo2.png" alt="logo" />
           </a>
           <Link
             onClick={this.handleBurgerClick}
