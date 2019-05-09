@@ -20,6 +20,7 @@
     "nodemon": "^1.18.7"
   },
   "dependencies": {
+    "dateformat": "^3.0.3",
     "dotenv": "^8.0.0",
     "express": "^4.16.3",
     "express-session": "^1.16.1",

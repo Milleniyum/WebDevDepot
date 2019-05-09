@@ -25,7 +25,8 @@ class Navbar extends Component {
     this.state.menuActive ? this.setState({ menuActive: false }) : this.setState({ menuActive: true });
   }
 
-  handleContactClick = () => {
+  handleContactClick = event => {
+    event.preventDefault();
     this.setState({ menuActive: false });
     this.props.showContact();
   }

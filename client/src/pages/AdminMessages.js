@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Container from "../components/Container";
 import Wrapper from "../components/Wrapper";
+import dateFormat from "dateformat";
 import API from "../utils/API";
 
 class AdminMessages extends Component {
@@ -19,9 +20,20 @@ class AdminMessages extends Component {
 
   getMessages = () => {
     API.getMessages().then(res => {
-      console.log(res.data);
       this.setState({ messages: res.data});
-    });
+    }).catch(err => console.log(err));
+  };
+
+  archiveMessage = id => {
+    API.archiveMessage(id).then(res => {
+      this.getMessages();
+    }).catch(err => console.log(err));
+  };
+
+  deleteMessage = id => {
+    API.deleteMessage(id).then(res => {
+      this.getMessages();
+    }).catch(err => console.log(err));
   };
 
   render() {
@@ -56,7 +68,7 @@ class AdminMessages extends Component {
                           ? message.user.username
                           : "Unknown"}
                       </td>
-                      <td>{message.created}</td>
+                      <td>{dateFormat(Date(message.created), "mmmm dS, yyyy")}</td>
                       <td>{message.subject}</td>
                       <td>
                         {message.subject === "Suggest Site" ? <a
@@ -69,19 +81,30 @@ class AdminMessages extends Component {
                         </a> : message.path}
                       </td>
                       <td>{message.content}</td>
-                      <td>{message.contact ?
-                        <a href={message.user.email}>
+                      <td style={{paddingLeft: "38px"}}>{message.contact ?
+                        <a href={"mailto:" + message.user.email}>
                           <span>
-                          <i
-                            className="fas fa-envelope"
-                            style={{ color: "blue", cursor: "pointer" }}
+                            <i
+                              title="reply"
+                            className="far fa-envelope"
+                            style={{cursor: "pointer" }}
                           />
                           </span>
                         </a> : ""}
-                        </td>
+                      </td>
+                      <td>
+                        <span onClick={() => this.archiveMessage(message._id)}>
+                          <i
+                            title="archive"
+                            className="fas fa-archive"
+                            style={{ color: "blue", cursor: "pointer" }}
+                          />
+                        </span>
+                      </td>
                       <td>
                         <span onClick={() => this.deleteMessage(message._id)}>
                           <i
+                            title={"delete"}
                             className="fas fa-backspace"
                             style={{ color: "red", cursor: "pointer" }}
                           />

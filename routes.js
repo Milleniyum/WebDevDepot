@@ -139,7 +139,10 @@ router.get("/api/search", function(req, res) {
     //split string at spaces into array
     //filter out any empty strings from array
     //filter out any duplicate words
-    let tags = req.query.tags.replace(/\W/g, " ").split(" ").filter(el => el !== "");
+    let tags = req.query.tags
+      .replace(/\W/g, " ")
+      .split(" ")
+      .filter(el => el !== "");
     tags = tags.filter((el, index) => tags.indexOf(el) >= index);
 
     db.Resource.find({ tags: { $in: tags } })
@@ -211,15 +214,33 @@ router.get("/api/favorites", isAuthenticated, function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
-router.get("/api/messages", isAuthenticated, function (req, res) {
-  db.Message.find({}, null, { sort: { created: -1 } })
+router.get("/api/messages", isAuthenticated, function(req, res) {
+  db.Message.find({archived: false }, null, { sort: { created: -1 } })
     .populate("user")
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
-})
+});
 
-router.post("/api/message", isAuthenticated, function (req, res) {
-  db.Message.create({ user: req.user._id, subject: req.body.subject, path: req.body.path, content: req.body.content, contact: req.body.contact })
+router.post("/api/message", isAuthenticated, function(req, res) {
+  db.Message.create({
+    user: req.user._id,
+    subject: req.body.subject,
+    path: req.body.path,
+    content: req.body.content,
+    contact: req.body.contact
+  })
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.put("/api/message/:id", isAuthenticated, function(req, res) {
+  db.Message.findOneAndUpdate({ _id: req.params.id }, { archived: true })
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.delete("/api/message/:id", isAuthenticated, function(req, res) {
+  db.Message.findOneAndDelete({ _id: req.params.id })
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
 });

@@ -67,5 +67,11 @@ export default {
   },
   sendMessage: function (message) {
     return axios.post("/api/message", message);
+  },
+  archiveMessage: function (id) {
+    return axios.put("/api/message/" + id);
+  },
+  deleteMessage: function (id) {
+    return axios.delete("/api/message/" + id);
   }
 };

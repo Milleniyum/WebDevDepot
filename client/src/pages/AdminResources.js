@@ -162,7 +162,7 @@ class AdminResources extends Component {
             <div className="column is-9">
               <table
                 className="table is-hoverable is-striped"
-                style={{ borderRadius: "6px" }}
+                style={{ borderRadius: "6px", width: "100%" }}
               >
                 <thead>
                   <tr>

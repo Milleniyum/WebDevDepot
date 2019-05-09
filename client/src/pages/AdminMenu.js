@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Container from "../components/Container";
 import Wrapper from "../components/Wrapper";
 import { Input, DropDown, TextArea, FormBtn } from "../components/Form";
+import Confirm from "../components/Confirm";
 import API from "../utils/API";
 
 class AdminMenu extends Component {
@@ -21,7 +22,15 @@ class AdminMenu extends Component {
     headers: ["Pos", "Level", "Title", "Description", "Source"],
     menuItems: [],
     updateId: "",
-    updatePos: ""
+    updatePos: "",
+    deleteId: "",
+    deletePos: "",
+    confirm: false,
+    confirmHeaderColor: "",
+    confirmTitle: "",
+    confirmQuestion: "",
+    confirmButtonClassColor: "",
+    confirmButtonText: ""
   };
 
   componentDidMount() {
@@ -88,10 +97,38 @@ class AdminMenu extends Component {
     this.resetForm();
   };
 
-  deleteMenuItem = menuItem => {
-    API.deleteMenuItem(menuItem).then(res => {
+  deleteMenuItem = () => {
+    API.deleteMenuItem({
+      id: this.state.deleteId,
+      position: this.state.deletePos
+    }).then(res => {
       this.getMenuItems();
     });
+  };
+
+  confirmDelete = (id, position) => {
+    //display confirm modal
+    this.setState({
+      deleteId: id,
+      deletePos: position,
+      confirm: true,
+      confirmHeaderColor: "red",
+      confirmTitle: "Delete?",
+      confirmQuestion: "Are you certain you wish to delete this menu item?",
+      confirmButtonClassColor: "is-danger",
+      confirmButtonText: "Delete"
+    });
+  };
+
+  handleConfirmClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
+    this.deleteMenuItem();
+  };
+
+  handleCancelClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
   };
 
   handleDoubleClick = rowInfo => {
@@ -108,6 +145,16 @@ class AdminMenu extends Component {
   render() {
     return (
       <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
+        <Confirm
+          isActive={this.state.confirm}
+          headerColor={this.state.confirmHeaderColor}
+          title={this.state.confirmTitle}
+          question={this.state.confirmQuestion}
+          buttonClassColor={this.state.confirmButtonClassColor}
+          buttonText={this.state.confirmButtonText}
+          handleConfirmClick={this.handleConfirmClick}
+          handleCancelClick={this.handleCancelClick}
+        />
         <Container className="container">
           <div className="columns">
             <div className="column is-3">
@@ -182,7 +229,7 @@ class AdminMenu extends Component {
             <div className="column is-9">
               <table
                 className="table is-hoverable is-striped"
-                style={{ borderRadius: "6px" }}
+                style={{ borderRadius: "6px", width: "100%" }}
               >
                 <thead>
                   <tr>
@@ -195,8 +242,10 @@ class AdminMenu extends Component {
                   {this.state.menuItems.map(item => (
                     <tr
                       key={item._id}
-                      style={{cursor: "pointer"}}
-                      className={this.state.updateId === item._id ? "is-selected" : ""}
+                      style={{ cursor: "pointer" }}
+                      className={
+                        this.state.updateId === item._id ? "is-selected" : ""
+                      }
                       onDoubleClick={() =>
                         this.handleDoubleClick({
                           updateId: item._id,
@@ -231,10 +280,7 @@ class AdminMenu extends Component {
                       <td>
                         <span
                           onClick={() =>
-                            this.deleteMenuItem({
-                              id: item._id,
-                              position: item.position
-                            })
+                            this.confirmDelete(item._id, item.position)
                           }
                         >
                           <i

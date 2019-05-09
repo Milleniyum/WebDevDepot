@@ -16,7 +16,8 @@ const messageSchema = new Schema({
         }
     ],
     contact: {type: Boolean, required: true},
-    created: {type: Date, required: true, default: Date.now()}
+    created: { type: Date, required: true, default: Date.now() },
+    archived: {type: Boolean, required: true, default: false}
 });
 
 const Message = mongoose.model("Message", messageSchema);

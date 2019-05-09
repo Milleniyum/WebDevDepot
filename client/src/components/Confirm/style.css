@@ -1,0 +1,13 @@
+.modal-card {
+    width: 250px; 
+    border-radius: 6px;
+}
+
+.modal-card-head {
+    background-color: red;
+}
+
+.modal-card-title {
+    color: white;
+}
+
