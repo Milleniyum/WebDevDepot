@@ -3,122 +3,67 @@ import "./style.css";
 
 class Matrix extends Component {
   componentDidMount() {
+    this.props.setEffectSource("https://codepen.io/P3R0/pen/MwgoKv");
     this.loadMatrix();
   }
 
   loadMatrix = () => {
-    var canvas = document.getElementById("canvas"),
-      ctx = canvas.getContext("2d"),
-      canvas2 = document.getElementById("canvas2"),
-      ctx2 = canvas2.getContext("2d"),
-      // full screen dimensions
-      cw = window.innerWidth,
-      ch = window.innerHeight,
-      charArr = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "l",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z"
-      ],
-      // maxCharCount = 100,
-      fallingCharArr = [],
-      fontSize = 10,
-      maxColums = cw / fontSize;
-    canvas.width = canvas2.width = cw;
-    canvas.height = canvas2.height = ch;
+    var c = document.getElementById("c");
+var ctx = c.getContext("2d");
 
-    function randomInt(min, max) {
-      return Math.floor(Math.random() * (max - min) + min);
-    }
+//making the canvas full screen
+c.height = window.innerHeight;
+c.width = window.innerWidth;
 
-    function randomFloat(min, max) {
-      return Math.random() * (max - min) + min;
-    }
+//chinese characters - taken from the unicode charset
+var chinese = "田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑";
+//converting the string into an array of single characters
+chinese = chinese.split("");
 
-    function Point(x, y) {
-      this.x = x;
-      this.y = y;
-    }
+var font_size = 10;
+var columns = c.width/font_size; //number of columns for the rain
+//an array of drops - one per column
+var drops = [];
+//x below is the x coordinate
+//1 = y co-ordinate of the drop(same for every drop initially)
+for(var x = 0; x < columns; x++)
+	drops[x] = 1; 
 
-    Point.prototype.draw = function(ctx) {
-      this.value = charArr[randomInt(0, charArr.length - 1)].toUpperCase();
-      this.speed = randomFloat(1, 5);
+//drawing the characters
+function draw()
+{
+	//Black BG for the canvas
+	//translucent BG to show trail
+	ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+	ctx.fillRect(0, 0, c.width, c.height);
+	
+	ctx.fillStyle = "#0F0"; //green text
+	ctx.font = font_size + "px arial";
+	//looping over drops
+	for(var i = 0; i < drops.length; i++)
+	{
+		//a random chinese character to print
+		var text = chinese[Math.floor(Math.random()*chinese.length)];
+		//x = i*font_size, y = value of drops[i]*font_size
+		ctx.fillText(text, i*font_size, drops[i]*font_size);
+		
+		//sending the drop back to the top randomly after it has crossed the screen
+		//adding a randomness to the reset to make the drops scattered on the Y axis
+		if(drops[i]*font_size > c.height && Math.random() > 0.975)
+			drops[i] = 0;
+		
+		//incrementing Y coordinate
+		drops[i]++;
+	}
+}
 
-      ctx2.fillStyle = "rgba(255,255,255,0.8)";
-      ctx2.font = fontSize + "px san-serif";
-      ctx2.fillText(this.value, this.x, this.y);
-
-      ctx.fillStyle = "#0F0";
-      ctx.font = fontSize + "px san-serif";
-      ctx.fillText(this.value, this.x, this.y);
-
-      this.y += this.speed;
-      if (this.y > ch) {
-        this.y = randomFloat(-100, 0);
-        this.speed = randomFloat(2, 5);
-      }
-    };
-
-    for (var i = 0; i < maxColums; i++) {
-      fallingCharArr.push(new Point(i * fontSize, randomFloat(-500, 0)));
-    }
-
-    var update = function() {
-      ctx.fillStyle = "rgba(0,0,0,0.05)";
-      ctx.fillRect(0, 0, cw, ch);
-
-      ctx2.clearRect(0, 0, cw, ch);
-
-      var i = fallingCharArr.length;
-
-      while (i--) {
-        fallingCharArr[i].draw(ctx);
-        // var v = fallingCharArr[i];
-      }
-
-      requestAnimationFrame(update);
-    };
-
-    update();
+setInterval(draw, 33);
   };
 
   render() {
     return (
       <React.Fragment>
-        <canvas
-          style={{ display: "block", position: "absolute", top: 0, left: 0 }}
-          id="canvas"
-        >
-          Canvas is not supported in your browser.
-        </canvas>
-        <canvas
-          style={{ display: "block", position: "absolute", top: 0, left: 0 }}
-          id="canvas2"
-        >
-          Canvas is not supported in your browser.
-        </canvas>
+        <canvas id="c"></canvas>
         {this.props.children}
       </React.Fragment>
     );

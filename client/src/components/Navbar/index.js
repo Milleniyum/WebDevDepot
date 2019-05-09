@@ -25,6 +25,11 @@ class Navbar extends Component {
     this.state.menuActive ? this.setState({ menuActive: false }) : this.setState({ menuActive: true });
   }
 
+  handleContactClick = () => {
+    this.setState({ menuActive: false });
+    this.props.showContact();
+  }
+
   handleLoginClick = event => {
     event.preventDefault();
     this.props.isAuth ? this.props.logout() : this.props.showLogin();
@@ -76,12 +81,12 @@ class Navbar extends Component {
             {this.props.isAuth ? (
               <React.Fragment>
                 <Link
-                  onClick={() => this.setState({menuActive: false})}
+                  onClick={this.handleContactClick}
                   className="navbar-item"
-                  to="/contact"
+                  to=""
                 >
                   <span className="icon">
-                    <i className="fas fa-comment" style={{ color: "white" }} />
+                    <i className="fas fa-envelope" style={{ color: "white" }} />
                   </span>
                 </Link>
                 <Link

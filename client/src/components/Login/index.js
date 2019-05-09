@@ -24,14 +24,6 @@ class Login extends Component {
     if (event.key === "Escape") this.cancel(event);
   };
 
-  resetForm = () => {
-    this.setState({
-      username: "",
-      password: "",
-      error: ""
-    });
-  };
-
   login = event => {
     event.preventDefault();
     API.login({
@@ -44,7 +36,6 @@ class Login extends Component {
             error: res.data.message
           });
         } else {
-          this.resetForm();
           this.props.isAuthorized();
           this.props.closeLogin();
         }
@@ -59,7 +50,6 @@ class Login extends Component {
 
   cancel = (event, form) => {
     event.preventDefault();
-    this.resetForm();
     this.props.closeLogin(form);
   };
 
@@ -73,7 +63,7 @@ class Login extends Component {
   render() {
     return (
       <Modal title="Login" closeForm={this.cancel}>
-        <form className="login-form">
+        <form>
           <FocusInput
             name="username"
             value={this.state.username}

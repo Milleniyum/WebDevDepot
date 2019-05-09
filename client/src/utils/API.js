@@ -59,5 +59,13 @@ export default {
   },
   searchResources: function (query) {
     return axios.get("/api/search/?tags=" + query);
+  },
+
+  //Contact
+  getMessages: function () {
+    return axios.get("/api/messages");
+  },
+  sendMessage: function (message) {
+    return axios.post("/api/message", message);
   }
 };

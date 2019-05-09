@@ -87,3 +87,17 @@ export function DropDown(props) {
     </div>
   );
 }
+
+export function CheckBox(props) {
+  const { label, ...other } = props;
+  return (
+    <div className="field">
+      <div className="control">
+        <label className="checkbox">
+          <input type="checkbox" {...other} />
+          {label}
+        </label>
+      </div>
+    </div>
+  );
+}

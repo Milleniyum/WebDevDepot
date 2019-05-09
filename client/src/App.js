@@ -4,10 +4,10 @@ import Navbar from "./components/Navbar";
 import Tabs from "./components/Tabs";
 import Main from "./pages/Main";
 import Favorites from "./pages/Favorites";
-import Contact from "./pages/Contact";
+import Contact from "./components/Contact";
 import AdminMenu from "./pages/AdminMenu";
 import AdminResources from "./pages/AdminResources";
-import AdminSuggestions from "./pages/AdminSuggestions";
+import AdminMessages from "./pages/AdminMessages";
 import NotFound from "./pages/404";
 import Registration from "./components/Registration";
 import Login from "./components/Login";
@@ -22,11 +22,13 @@ class App extends Component {
     activeTab: "",
     showReg: false,
     showLogin: false,
+    showContact: false,
     username: "",
     likes: [],
     favorites: [],
     clicks: [],
-    authSites: ["/admin", "/favorites", "/contact"]
+    authSites: ["/admin", "/favorites", "/contact"],
+    wait404: true
   };
 
   componentDidMount() {
@@ -47,6 +49,7 @@ class App extends Component {
   isAuthorized = () => {
     API.isAuthorized()
       .then(res => {
+        this.setState({ wait404: false });
         if (res.data.message) {
           this.resetState();
         } else {
@@ -56,12 +59,13 @@ class App extends Component {
             username: res.data.username,
             likes: res.data.likes,
             favorites: res.data.favorites,
-            clicks: res.data.clicks
+            clicks: res.data.clicks,
           });
         }
       })
       .catch(err => {
         console.log(err);
+        this.setState({ wait404: false });
         this.resetState();
       });
   };
@@ -74,6 +78,10 @@ class App extends Component {
     this.setState({ showLogin: true });
   };
 
+  showContact = () => {
+    this.setState({ showContact: true });
+  };
+
   logout = () => {
     API.logout()
       .then(res => {
@@ -82,6 +90,12 @@ class App extends Component {
       .catch(err => {
         this.isAuthorized();
       });
+  };
+
+  closeContact = () => {
+    this.setState({
+      showContact: false
+    });
   };
 
   closeRegistration = form => {
@@ -108,6 +122,7 @@ class App extends Component {
             username={this.state.username}
             setTab={this.setTab}
             showLogin={this.showLogin}
+            showContact={this.showContact}
             logout={this.logout}
           />
           {this.state.isAdmin ? (
@@ -140,7 +155,7 @@ class App extends Component {
               path="/favorites"
               render={props =>
                 !this.state.isAuth ? (
-                  <NotFound />
+                  <NotFound wait404={this.state.wait404} />
                 ) : (
                   <Favorites
                     likes={this.state.likes}
@@ -151,20 +166,13 @@ class App extends Component {
                 )
               }
             />
-            <Route
-              exact
-              path="/contact"
-              render={props =>
-                !this.state.isAuth ? <NotFound /> : <Contact />
-              }
-            />
 
             <Route
               exact
               path="/admin/menu"
               render={props =>
                 !this.state.isAdmin ? (
-                  <NotFound />
+                  <NotFound wait404={this.state.wait404} />
                 ) : (
                   <AdminMenu setTab={this.setTab} />
                 )
@@ -175,7 +183,7 @@ class App extends Component {
               path="/admin/resources"
               render={props =>
                 !this.state.isAdmin ? (
-                  <NotFound />
+                  <NotFound wait404={this.state.wait404} />
                 ) : (
                   <AdminResources setTab={this.setTab} />
                 )
@@ -184,22 +192,30 @@ class App extends Component {
 
             <Route
               exact
-              path="/admin/suggestions"
+              path="/admin/messages"
               render={props =>
                 !this.state.isAdmin ? (
-                  <NotFound />
+                  <NotFound wait404={this.state.wait404} />
                 ) : (
-                  <AdminSuggestions setTab={this.setTab} />
+                  <AdminMessages setTab={this.setTab} />
                 )
               }
             />
             {window.location.pathname === "/admin" && this.state.isAdmin ? (
               ""
             ) : (
-              <Route component={NotFound} />
+              <Route
+                render={props => <NotFound wait404={this.state.wait404} />}
+              />
             )}
           </Switch>
         </Router>
+
+        {this.state.showContact && this.state.isAuth ? (
+          <Contact closeContact={this.closeContact} />
+        ) : (
+          ""
+        )}
 
         {this.state.showReg ? (
           <Registration

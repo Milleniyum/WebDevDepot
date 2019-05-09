@@ -198,7 +198,7 @@ router.put("/api/resource/like", isAuthenticated, function(req, res) {
     .catch(err => res.status(422).json(err));
 });
 
-router.delete("/api/resource", function(req, res) {
+router.delete("/api/resource", isAuthenticated, function(req, res) {
   db.Resource.findOneAndDelete({ _id: req.body.id })
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
@@ -207,6 +207,19 @@ router.delete("/api/resource", function(req, res) {
 router.get("/api/favorites", isAuthenticated, function(req, res) {
   db.User.find({ _id: req.user._id })
     .populate("favorites")
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+});
+
+router.get("/api/messages", isAuthenticated, function (req, res) {
+  db.Message.find({}, null, { sort: { created: -1 } })
+    .populate("user")
+    .then(result => res.json(result))
+    .catch(err => res.status(422).json(err));
+})
+
+router.post("/api/message", isAuthenticated, function (req, res) {
+  db.Message.create({ user: req.user._id, subject: req.body.subject, path: req.body.path, content: req.body.content, contact: req.body.contact })
     .then(result => res.json(result))
     .catch(err => res.status(422).json(err));
 });

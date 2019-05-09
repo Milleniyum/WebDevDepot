@@ -75,7 +75,7 @@ class Main extends Component {
     API.searchResources(query).then(res => {
       let filteredString = query.replace(/\W/g, " ").split(" ").filter(el => el !== "")
       filteredString = filteredString.filter((el, index) => filteredString.indexOf(el) >= index).join(" ").toLowerCase();
-      this.setState({ selectedMenuItem: "", resources: res.data, title: "Search Results > " + filteredString, description: "resources found: " + res.data.length, source: "" });
+      this.setState({ resources: res.data, title: "Search Results > " + filteredString, description: "resources found: " + res.data.length, source: "" });
     }).catch(err => console.log(err));
   }
 

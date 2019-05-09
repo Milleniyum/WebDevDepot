@@ -39,6 +39,7 @@ export default class Menu extends Component {
   handleKeyDown = event => {
     if (event.key === "Enter" && this.state.search.trim() !== "") {
       this.props.searchResources(this.state.search.toLowerCase());
+      this.setState({ selectedMenuItem: "" });
     }
   };
 
@@ -149,7 +150,7 @@ function LI(props) {
         }
         onClick={event =>
           props.handleMenuClick(event, false, props.menuItem._id, {
-            title: props.menuItem.title,
+            title: props.path + " > " + props.menuItem.title,
             description: props.menuItem.description,
             source: props.menuItem.source
           })

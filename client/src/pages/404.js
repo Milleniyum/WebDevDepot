@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Matrix from "../components/Matrix";
+import Snow from "../components/Snow";
 
 class NotFound extends Component {
   state = {
@@ -21,9 +22,11 @@ class NotFound extends Component {
         type: "normal",
         message: "awkward."
       },
-      { type: "special", message: "Pill" }
+      { type: "special", message: "Pill" },
+      { type: "special", message: "Snow" }
     ],
-    selected: ""
+    selected: "",
+    effectSource: ""
   };
 
   componentDidMount() {
@@ -39,116 +42,161 @@ class NotFound extends Component {
     window.location.href = window.location.origin;
   };
 
+  setEffectSource = path => {
+    this.setState({ source: path });
+  };
+
   render() {
     return (
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: -1
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-            fontSize: "30px",
-            color: "white",
-            padding: "20px",
-            textAlign: "center"
-          }}
-        >
-          {this.state.selected.type === "normal" ? (
-            <p>{this.state.selected.message}</p>
-          ) : (
-            ""
-          )}
-          {this.state.selected.type === "special" &&
-          this.state.selected.message === "Pill" ? (
-            <React.Fragment>
-              <p>
-                Will it be the{" "}
-                <label
-                  onClick={this.bluePill}
-                  style={{
-                    display: "inline",
-                    borderRadius: "16px",
-                    color: "white",
-                    backgroundColor: "blue",
-                    cursor: "pointer",
-                    padding: "4px",
-                    fontSize: "24px"
-                  }}
-                >
-                  blue pill
-                </label>{" "}
-                or the{" "}
-                <label
-                  onClick={this.redPill}
-                  style={{
-                    display: "inline",
-                    borderRadius: "16px",
-                    color: "white",
-                    backgroundColor: "red",
-                    cursor: "pointer",
-                    padding: "4px",
-                    fontSize: "24px"
-                  }}
-                >
-                  red pill
-                </label>{" "}
-                ?
-              </p>
-            </React.Fragment>
-          ) : (
-            ""
-          )}
-          {this.state.selected.type === "special" &&
-          this.state.selected.message === "Matrix" ? (
-            <React.Fragment>
-              <Matrix />
-              <p style={{ zIndex: 100 }}>THE MATRIX HAS YOU</p>
-            </React.Fragment>
-          ) : (
-            ""
-          )}
-          {this.state.selected.type === "special" &&
-          this.state.selected.message === "Shame" ? (
-            <p>
-              <i className="fas fa-bell" style={{ color: "gold" }} />
-              <br />
-              Shame
-              <br />
-              <i className="fas fa-bell" style={{ color: "gold" }} />
-              <br />
-              Shame
-              <br />
-              <i className="fas fa-bell" style={{ color: "gold" }} />
-              <br />
-              Shame
-              <br />
-              <i className="fas fa-bell" style={{ color: "gold" }} />
-            </p>
-          ) : (
-            ""
-          )}
+      <React.Fragment>
+        {!this.props.wait404 ? (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: -1
+            }}
+          >
+            {this.state.source ? (
+              <a
+                href={this.state.source}
+                rel="noopener noreferrer"
+                target="_blank"
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50px",
+                  zIndex: "100"
+                }}
+              >
+                effect source
+              </a>
+            ) : (
+              ""
+            )}
 
-          {this.state.selected.type === "special" &&
-          this.state.selected.message === "Daenerys" ? (
-            <p style={{fontFamily: "'Cinzel Decorative', cursive"}}>
-              You sit before Web Dev Depot, cyber-born, first of it's name,
-              breaker of code and maker of web developers!
-            </p>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+                fontSize: "30px",
+                color: "white",
+                padding: "20px",
+                textAlign: "center"
+              }}
+            >
+              {this.state.selected.type === "normal" ? (
+                <p>{this.state.selected.message}</p>
+              ) : (
+                ""
+              )}
+
+              {this.state.selected.type === "special" &&
+              this.state.selected.message === "Pill" ? (
+                <React.Fragment>
+                  <p>
+                    Will it be the{" "}
+                    <label
+                      onClick={this.bluePill}
+                      style={{
+                        display: "inline",
+                        borderRadius: "16px",
+                        color: "white",
+                        backgroundColor: "blue",
+                        cursor: "pointer",
+                        padding: "4px",
+                        fontSize: "24px"
+                      }}
+                    >
+                      blue pill
+                    </label>{" "}
+                    or the{" "}
+                    <label
+                      onClick={this.redPill}
+                      style={{
+                        display: "inline",
+                        borderRadius: "16px",
+                        color: "white",
+                        backgroundColor: "red",
+                        cursor: "pointer",
+                        padding: "4px",
+                        fontSize: "24px"
+                      }}
+                    >
+                      red pill
+                    </label>{" "}
+                    ?
+                  </p>
+                </React.Fragment>
+              ) : (
+                ""
+              )}
+
+              {this.state.selected.type === "special" &&
+              this.state.selected.message === "Matrix" ? (
+                <React.Fragment>
+                  <Matrix setEffectSource={this.setEffectSource} />
+                  <p style={{ zIndex: 100 }}>THE MATRIX HAS YOU</p>
+                </React.Fragment>
+              ) : (
+                ""
+              )}
+
+              {this.state.selected.type === "special" &&
+              this.state.selected.message === "Snow" ? (
+                <React.Fragment>
+                  <p>
+                    const theNorth = "remembers"
+                    <br />
+                    {"//and nothing you do will make it forget"}
+                  </p>
+                  <Snow setEffectSource={this.setEffectSource} />
+                </React.Fragment>
+              ) : (
+                ""
+              )}
+
+              {this.state.selected.type === "special" &&
+              this.state.selected.message === "Shame" ? (
+                <p>
+                  <i className="fas fa-bell" style={{ color: "gold" }} />
+                  <br />
+                  Shame
+                  <br />
+                  <i className="fas fa-bell" style={{ color: "gold" }} />
+                  <br />
+                  Shame
+                  <br />
+                  <i className="fas fa-bell" style={{ color: "gold" }} />
+                  <br />
+                  Shame
+                  <br />
+                  <i className="fas fa-bell" style={{ color: "gold" }} />
+                </p>
+              ) : (
+                ""
+              )}
+
+              {this.state.selected.type === "special" &&
+              this.state.selected.message === "Daenerys" ? (
+                <p style={{ fontFamily: "'Cinzel Decorative', cursive" }}>
+                  You sit before Web Dev Depot, cyber-born, first of it's name,
+                  breaker of code and maker of web developers!
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </React.Fragment>
     );
   }
 }

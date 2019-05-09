@@ -12,8 +12,8 @@ function Tabs(props) {
         <li className={props.active === "resources" ? "is-active" : ""}>
           <Link to="/admin/resources">Resources</Link>
         </li>
-        <li className={props.active === "suggestions" ? "is-active" : ""}>
-          <Link to="/admin/suggestions">Messages</Link>
+        <li className={props.active === "messages" ? "is-active" : ""}>
+          <Link to="/admin/messages">Messages</Link>
         </li>
       </ul>
     </div>

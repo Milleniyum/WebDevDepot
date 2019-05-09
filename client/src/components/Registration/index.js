@@ -32,20 +32,6 @@ class Registration extends Component {
     if (event.key === "Escape") this.cancel(event);
   };
 
-  resetForm = () => {
-    this.setState({
-      username: "",
-      email: "",
-      password: "",
-      confirm: "",
-      validUN: false,
-      validEM: false,
-      validPW: false,
-      validCF: false,
-      error: ""
-    });
-  };
-
   validateField = (name, value) => {
     switch (name) {
       case "username":
@@ -93,7 +79,6 @@ class Registration extends Component {
           });
         } else {
           console.log("registration successful");
-          this.resetForm();
           this.props.isAuthorized();
           this.props.closeRegistration();
         }
@@ -111,7 +96,6 @@ class Registration extends Component {
 
   cancel = (event, form) => {
     event.preventDefault();
-    this.resetForm();
     this.props.closeRegistration(form);
   };
 
@@ -126,7 +110,7 @@ class Registration extends Component {
   render() {
     return (
       <Modal title="Registration" closeForm={this.cancel}>
-        <form className="register-form">
+        <form>
           <FocusInput
             name="username"
             value={this.state.username}
