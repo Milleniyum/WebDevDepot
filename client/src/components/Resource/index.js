@@ -38,7 +38,7 @@ class Resource extends Component {
 
   render() {
     return (
-      <div className="card">
+      <div className="card resource-card">
         <div className="card-content">
           <p>
             <a className="resource-link" onClick={this.clickedResource} href={this.props.url} target="_blank" rel="noopener noreferrer">

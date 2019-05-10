@@ -25,7 +25,7 @@ class NotFound extends Component {
       },
       { type: "special", message: "Pill" },
       { type: "special", message: "Snow" },
-      {type: "special", message: "StarWars"}
+      { type: "special", message: "StarWars" }
     ],
     selected: "",
     effectSource: ""
@@ -51,18 +51,7 @@ class NotFound extends Component {
   render() {
     return (
       <React.Fragment>
-        {!this.props.wait404 ? (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              zIndex: -1
-            }}
-          >
-            {this.state.source ? (
+        {this.state.source ? (
               <a
                 href={this.state.source}
                 rel="noopener noreferrer"
@@ -78,8 +67,19 @@ class NotFound extends Component {
               </a>
             ) : (
               ""
-            )}
-
+          )}
+        
+        {!this.props.wait404 ? (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: -1
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -197,14 +197,11 @@ class NotFound extends Component {
           </div>
         ) : (
           ""
-          )}
-        
-          {this.state.selected.type === "special" &&
-              this.state.selected.message === "StarWars" ? (
-                <StarWars setEffectSource={this.setEffectSource} />
-              ) : (
-                ""
-              )}
+        )}
+
+        {this.state.selected.type === "special" &&
+        this.state.selected.message === "StarWars" ? (
+          <StarWars setEffectSource={this.setEffectSource} />
         ) : (
           ""
         )}

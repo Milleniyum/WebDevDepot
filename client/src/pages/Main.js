@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Welcome from "../components/Welcome";
 import Menu from "../components/Menu";
 import Wrapper from "../components/Wrapper";
 import Hero from "../components/Hero";
@@ -7,7 +8,7 @@ import API from "../utils/API";
 
 class Main extends Component {
   state = {
-    title: "Welcome to Web Dev Depot",
+    title: "Welcome",
     description: "",
     source: "",
     menuItems: [],
@@ -97,15 +98,17 @@ class Main extends Component {
           populateHero={this.populateHero}
         />
         <Wrapper marginTop="55px" marginLeft="216px" heightOffset="60px">
-          <Hero
-            align="left"
-            margin="0"
-            theme="is-dark"
-            title={this.state.title}
-            titlesize="1.5rem"
-            description={this.state.description}
-            source={this.state.source}
-          />
+          
+          {this.state.title === "Welcome" ? <Welcome /> :
+            <Hero
+              align="left"
+              margin="0"
+              theme="is-dark"
+              title={this.state.title}
+              titlesize="1.5rem"
+              description={this.state.description}
+              source={this.state.source}
+            />}
           {this.state.resources.map(resource => (
             <Resource
               key={resource._id}

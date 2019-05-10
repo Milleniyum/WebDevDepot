@@ -1,5 +1,6 @@
 
 .content-wrapper {
+    position: relative;
     min-width: auto;
     display: block;
     border-radius: 6px;

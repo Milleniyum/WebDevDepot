@@ -17,7 +17,8 @@ class AdminMessages extends Component {
     confirmTitle: "",
     confirmQuestion: "",
     confirmButtonClassColor: "",
-    confirmButtonText: ""
+    confirmButtonText: "",
+    confirmDarkText: false
   };
 
   componentDidMount() {
@@ -59,11 +60,12 @@ class AdminMessages extends Component {
       deleteId: type === "delete" ? id : "",
       archiveId: type === "archive" ? id : "",
       confirm: true,
-      confirmHeaderColor: type === "delete" ? "#ff3760" : "green",
+      confirmHeaderColor: type === "delete" ? "#ff3760" : "#01d1b2",
       confirmTitle: type === "delete" ? "Delete?" : "Archive?",
       confirmQuestion: type === "delete" ? "Are you certain you wish to delete this message?" : "Are you certain you wish to archive this message?",
       confirmButtonClassColor: type === "delete" ? "is-danger" : "is-primary",
-      confirmButtonText: type === "delete" ? "Delete" : "Archive"
+      confirmButtonText: type === "delete" ? "Delete" : "Archive",
+      confirmDarkText: type === "delete" ? false : true
     });
   };
 
@@ -88,6 +90,7 @@ class AdminMessages extends Component {
           question={this.state.confirmQuestion}
           buttonClassColor={this.state.confirmButtonClassColor}
           buttonText={this.state.confirmButtonText}
+          darkText={this.state.confirmDarkText}
           handleConfirmClick={this.handleConfirmClick}
           handleCancelClick={this.handleCancelClick}
         />
