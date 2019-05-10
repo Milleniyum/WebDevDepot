@@ -34,10 +34,10 @@ class AdminMenu extends Component {
   };
 
   componentDidMount() {
-    //setting the tab here instead of the tab component allows
-    //the tab to stay active if screen is refreshed
+    //setting the tab here instead of the tab component allows the tab to stay active if screen is refreshed
     this.props.setTab("menu");
     this.getMenuItems();
+    document.addEventListener("keydown", this.handleKeyDown);
   }
 
   resetForm = () => {
@@ -49,6 +49,14 @@ class AdminMenu extends Component {
       source: "",
       buttonText: "Add"
     });
+  };
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = event => {
+    if (event.key === "Escape") this.handleCancelClick(event);
   };
 
   getMenuItems = () => {
@@ -112,7 +120,7 @@ class AdminMenu extends Component {
       deleteId: id,
       deletePos: position,
       confirm: true,
-      confirmHeaderColor: "red",
+      confirmHeaderColor: "#ff3760",
       confirmTitle: "Delete?",
       confirmQuestion: "Are you certain you wish to delete this menu item?",
       confirmButtonClassColor: "is-danger",

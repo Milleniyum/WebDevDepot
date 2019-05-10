@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Matrix from "../components/Matrix";
 import Snow from "../components/Snow";
+import StarWars from "../components/StarWars";
 
 class NotFound extends Component {
   state = {
@@ -23,7 +24,8 @@ class NotFound extends Component {
         message: "awkward."
       },
       { type: "special", message: "Pill" },
-      { type: "special", message: "Snow" }
+      { type: "special", message: "Snow" },
+      {type: "special", message: "StarWars"}
     ],
     selected: "",
     effectSource: ""
@@ -193,6 +195,16 @@ class NotFound extends Component {
               )}
             </div>
           </div>
+        ) : (
+          ""
+          )}
+        
+          {this.state.selected.type === "special" &&
+              this.state.selected.message === "StarWars" ? (
+                <StarWars setEffectSource={this.setEffectSource} />
+              ) : (
+                ""
+              )}
         ) : (
           ""
         )}

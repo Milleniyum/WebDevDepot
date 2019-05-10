@@ -5,7 +5,7 @@ import "./style.css";
 
 function Modal(props) {
   return (
-    <div className="modal is-active">
+    <div className="modal form-modal is-active">
       <div onClick={props.closeForm} className="modal-background" />
       <div className="modal-card">
         <header className="modal-card-head">

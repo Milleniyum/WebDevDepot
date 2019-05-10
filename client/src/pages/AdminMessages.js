@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Container from "../components/Container";
 import Wrapper from "../components/Wrapper";
+import Confirm from "../components/Confirm";
 import dateFormat from "dateformat";
 import API from "../utils/API";
 
@@ -8,15 +9,31 @@ class AdminMessages extends Component {
   state = {
     headers: ["User", "Date", "Subject", "Path/URL", "Message", "Contact" ],
     messages: [],
-    selectedMessage: ""
+    selectedMessage: "",
+    deleteId: "",
+    archiveId: "",
+    confirm: false,
+    confirmHeaderColor: "",
+    confirmTitle: "",
+    confirmQuestion: "",
+    confirmButtonClassColor: "",
+    confirmButtonText: ""
   };
 
   componentDidMount() {
-    //setting the tab here instead of the tab component allows
-    //the tab to stay active if screen is refreshed
+    //setting the tab here instead of the tab component allows the tab to stay active if screen is refreshed
     this.props.setTab("messages");
     this.getMessages();
+    document.addEventListener("keydown", this.handleKeyDown);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = event => {
+    if (event.key === "Escape") this.handleCancelClick(event);
+  };
 
   getMessages = () => {
     API.getMessages().then(res => {
@@ -24,21 +41,56 @@ class AdminMessages extends Component {
     }).catch(err => console.log(err));
   };
 
-  archiveMessage = id => {
-    API.archiveMessage(id).then(res => {
+  archiveMessage = () => {
+    API.archiveMessage(this.state.archiveId).then(res => {
       this.getMessages();
     }).catch(err => console.log(err));
   };
 
-  deleteMessage = id => {
-    API.deleteMessage(id).then(res => {
+  deleteMessage = () => {
+    API.deleteMessage(this.state.deleteId).then(res => {
       this.getMessages();
     }).catch(err => console.log(err));
+  };
+
+  confirmAction = (id, type) => {
+    //display confirm modal
+    this.setState({
+      deleteId: type === "delete" ? id : "",
+      archiveId: type === "archive" ? id : "",
+      confirm: true,
+      confirmHeaderColor: type === "delete" ? "#ff3760" : "green",
+      confirmTitle: type === "delete" ? "Delete?" : "Archive?",
+      confirmQuestion: type === "delete" ? "Are you certain you wish to delete this message?" : "Are you certain you wish to archive this message?",
+      confirmButtonClassColor: type === "delete" ? "is-danger" : "is-primary",
+      confirmButtonText: type === "delete" ? "Delete" : "Archive"
+    });
+  };
+
+  handleConfirmClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
+    this.state.deleteId ? this.deleteMessage() : this.archiveMessage();
+  };
+
+  handleCancelClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
   };
 
   render() {
     return (
       <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
+        <Confirm
+          isActive={this.state.confirm}
+          headerColor={this.state.confirmHeaderColor}
+          title={this.state.confirmTitle}
+          question={this.state.confirmQuestion}
+          buttonClassColor={this.state.confirmButtonClassColor}
+          buttonText={this.state.confirmButtonText}
+          handleConfirmClick={this.handleConfirmClick}
+          handleCancelClick={this.handleCancelClick}
+        />
         <Container>
               <table
                 className="table is-hoverable is-striped"
@@ -93,16 +145,16 @@ class AdminMessages extends Component {
                         </a> : ""}
                       </td>
                       <td>
-                        <span onClick={() => this.archiveMessage(message._id)}>
+                        <span onClick={() => this.confirmAction(message._id, "archive")}>
                           <i
                             title="archive"
                             className="fas fa-archive"
-                            style={{ color: "blue", cursor: "pointer" }}
+                            style={{ color: "green", cursor: "pointer" }}
                           />
                         </span>
                       </td>
                       <td>
-                        <span onClick={() => this.deleteMessage(message._id)}>
+                        <span onClick={() => this.confirmAction(message._id, "delete")}>
                           <i
                             title={"delete"}
                             className="fas fa-backspace"

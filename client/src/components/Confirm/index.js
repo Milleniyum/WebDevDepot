@@ -5,10 +5,10 @@ import "./style.css";
 
 function Confirm(props) {
   return (
-    <div className={"modal " + (props.isActive ? "is-active" : "")}>
+    <div className={"modal confirm-modal " + (props.isActive ? "is-active" : "")}>
       <div onClick={props.handleCancelClick} className="modal-background"></div>
   <div className="modal-card">
-    <header className="modal-card-head" style={{color: props.headerColor}}>
+    <header className="modal-card-head" style={{backgroundColor: props.headerColor}}>
           <p className="modal-card-title">{props.title}</p>
       <button onClick={props.handleCancelClick} className="delete" aria-label="close"></button>
     </header>

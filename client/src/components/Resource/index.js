@@ -41,7 +41,7 @@ class Resource extends Component {
       <div className="card">
         <div className="card-content">
           <p>
-            <a onClick={this.clickedResource} href={this.props.url} target="_blank" rel="noopener noreferrer">
+            <a className="resource-link" onClick={this.clickedResource} href={this.props.url} target="_blank" rel="noopener noreferrer">
               {this.props.title}
             </a>
           </p>

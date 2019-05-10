@@ -1,13 +1,13 @@
-.modal-card {
+.confirm-modal .modal-card {
     width: 250px; 
     border-radius: 6px;
 }
 
-.modal-card-head {
-    background-color: red;
+.confirm-modal .modal-card-title {
+    color: white;
 }
 
-.modal-card-title {
-    color: white;
+.confirm-modal .modal-card-head{
+    text-align: left;
 }
 

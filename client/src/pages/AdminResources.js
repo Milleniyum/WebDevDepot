@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Container from "../components/Container";
 import Wrapper from "../components/Wrapper";
 import { Input, DropDown, FormBtn } from "../components/Form";
+import Confirm from "../components/Confirm";
 import API from "../utils/API";
 
 class AdminResources extends Component {
@@ -14,16 +15,31 @@ class AdminResources extends Component {
     options: [],
     headers: ["Menu Item", "Title", "URL", "Tags", "Likes"],
     resources: [],
-    updateId: ""
+    updateId: "",
+    deleteId: "",
+    confirm: false,
+    confirmHeaderColor: "",
+    confirmTitle: "",
+    confirmQuestion: "",
+    confirmButtonClassColor: "",
+    confirmButtonText: ""
   };
 
   componentDidMount() {
-    //setting the tab here instead of the tab component allows
-    //the tab to stay active if screen is refreshed
+    //setting the tab here instead of the tab component allows the tab to stay active if screen is refreshed
     this.props.setTab("resources");
     this.getMenuItems();
     this.getResources();
+    document.addEventListener("keydown", this.handleKeyDown);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = event => {
+    if (event.key === "Escape") this.handleCancelClick(event);
+  };
 
   resetForm = () => {
     this.setState({
@@ -88,9 +104,33 @@ class AdminResources extends Component {
   };
 
   deleteResource = id => {
-    API.deleteResource({ id: id }).then(res => {
+    API.deleteResource({ id: this.state.deleteId }).then(res => {
       this.getResources();
     });
+  };
+
+  confirmDelete = (id) => {
+    //display confirm modal
+    this.setState({
+      deleteId: id,
+      confirm: true,
+      confirmHeaderColor: "#ff3760",
+      confirmTitle: "Delete?",
+      confirmQuestion: "Are you certain you wish to delete this resource?",
+      confirmButtonClassColor: "is-danger",
+      confirmButtonText: "Delete"
+    });
+  };
+
+  handleConfirmClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
+    this.deleteResource();
+  };
+
+  handleCancelClick = event => {
+    event.preventDefault();
+    this.setState({ confirm: false });
   };
 
   handleInputChange = event => {
@@ -103,6 +143,16 @@ class AdminResources extends Component {
   render() {
     return (
       <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
+        <Confirm
+          isActive={this.state.confirm}
+          headerColor={this.state.confirmHeaderColor}
+          title={this.state.confirmTitle}
+          question={this.state.confirmQuestion}
+          buttonClassColor={this.state.confirmButtonClassColor}
+          buttonText={this.state.confirmButtonText}
+          handleConfirmClick={this.handleConfirmClick}
+          handleCancelClick={this.handleCancelClick}
+        />
         <Container className="container">
           <div className="columns">
             <div className="column is-3">
@@ -209,7 +259,7 @@ class AdminResources extends Component {
                       <td>{resource.tags.toString()}</td>
                       <td>{resource.likes}</td>
                       <td>
-                        <span onClick={() => this.deleteResource(resource._id)}>
+                        <span onClick={() => this.confirmDelete(resource._id)}>
                           <i
                             className="fas fa-backspace"
                             style={{ color: "red", cursor: "pointer" }}

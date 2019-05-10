@@ -1,42 +1,48 @@
 .card {
-    display: inline-table;
-    overflow: hidden;
-    margin: 10px;
-    border-radius: 6px;
-    background-color: lightgray;
-    height: 200px;
-    width: 200px;
-    box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
-  }
+  display: inline-table;
+  overflow: hidden;
+  margin: 10px;
+  border-radius: 6px;
+  height: 200px;
+  width: 200px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 
-  .card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 14px 28px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.22);
-    transition: .1s;
-  }
-  
-  .card a {
-    color: blue;
-    font-size: 20px;
-    font-weight: 500;
-    text-overflow: ellipsis;
-  }
-  
-  .card footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    background-color: black;
-  }
+.card a {
+  font-size: 20px;
+  color: blue;
+}
 
-  .clicked {
-    color: green;
-  }
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  transition: 0.1s;
+}
 
-  .favorited {
-    color: yellow;
-  }
+.card footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: black;
+}
 
-  .liked {
-    color: white;
-  }
+.resource-link {
+  font-family: "Just Another Hand", cursive;
+  font-size: 35px !important;
+  color: black !important;
+  line-height: 2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.clicked {
+  color: green;
+}
+
+.favorited {
+  color: yellow;
+}
+
+.liked {
+  color: white;
+}
