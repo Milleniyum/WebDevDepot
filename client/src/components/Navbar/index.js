@@ -45,9 +45,9 @@ class Navbar extends Component {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <a className="navbar-item" href="/">
-            <img src="/images/brand_logo2.png" alt="logo" />
-          </a>
+          <Link className="navbar-item" to="/">
+            <img src="/images/brand_logo.png" alt="logo" />
+          </Link>
           <Link
             onClick={this.handleBurgerClick}
             className={"navbar-burger " + + (this.state.menuActive ? "is-active" : "")}
