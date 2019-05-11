@@ -117,8 +117,9 @@ class Navbar extends Component {
             <div className="navbar-item">
               <div className="buttons">
                 <Link
+                  style={{color: "white"}}
                   onClick={this.handleLoginClick}
-                  className="button is-info"
+                  className={"button " + (this.props.isAuth ? "is-text" : "is-info")}
                   to=""
                 >
                   {this.props.isAuth

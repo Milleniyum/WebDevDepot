@@ -14,26 +14,26 @@ class StarWars extends Component {
         <section className="star-wars">
           <div className="crawl">
             <div className="title">
-              <p>Episode IV</p>
-              <h1>A New Hope</h1>
+              <p>Episode III</p>
+              <h1>A New Route</h1>
             </div>
 
             <p>
-              It is a period of civil war. Rebel spaceships, striking from a
-              hidden base, have won their first victory against the evil
-              Galactic Empire.
+              It is a period of late nights. Rebel routes, striking from a
+              hidden API, have won their first victory against the evil
+              Galactic Four-Oh-Four.
             </p>
 
             <p>
-              During the battle, Rebel spies managed to steal secret plans to
-              the Empire’s ultimate weapon, the DEATH STAR, an armored space
-              station with enough power to destroy an entire planet.
+              During the battle, Axios spies managed to steal secret plans to
+              the Empire’s ultimate pseudo code, the DEATH POST, an armored collection
+              station with enough power to destroy an entire database.
             </p>
 
             <p>
-              Pursued by the Empire’s sinister agents, Princess Leia races home
-              aboard her starship, custodian of the stolen plans that can save
-              her people and restore freedom to the galaxy….
+              Pursued by the Empire’s sinister components, Princess Passport races home
+              aboard her ajax call, custodian of the stolen plans that can save
+              her JSON and restore freedom to the MongDB galaxy.
             </p>
           </div>
         </section>
