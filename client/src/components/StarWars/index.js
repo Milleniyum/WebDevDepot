@@ -33,7 +33,7 @@ class StarWars extends Component {
             <p>
               Pursued by the Empire’s sinister components, Princess Passport races home
               aboard her ajax call, custodian of the stolen plans that can save
-              her JSON and restore freedom to the MongDB galaxy.
+              her JSON and restore freedom to the MongoDB galaxy.
             </p>
           </div>
         </section>
