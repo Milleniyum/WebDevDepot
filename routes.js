@@ -145,7 +145,7 @@ router.get("/api/search", function(req, res) {
       .filter(el => el !== "");
     tags = tags.filter((el, index) => tags.indexOf(el) >= index);
 
-    db.Resource.find({ tags: { $in: tags } })
+    db.Resource.find({ tags: { $in: tags } }, null, {sort: { likes: -1 }})
       .then(result => res.json(result))
       .catch(err => res.status(422).json(err));
   }

@@ -82,7 +82,7 @@ class AdminMessages extends Component {
 
   render() {
     return (
-      <Wrapper marginTop="1px" padding="10px" heightOffset="94px">
+      <Wrapper marginLeft="5px" marginTop="1px" padding="10px" heightOffset="89px">
         <Confirm
           isActive={this.state.confirm}
           headerColor={this.state.confirmHeaderColor}

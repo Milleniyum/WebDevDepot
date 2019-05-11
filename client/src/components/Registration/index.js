@@ -109,7 +109,7 @@ class Registration extends Component {
 
   render() {
     return (
-      <Modal title="Registration" closeForm={this.cancel}>
+      <Modal title="Registration" icon="fas fa-user-edit" closeForm={this.cancel}>
         <form>
           <FocusInput
             name="username"

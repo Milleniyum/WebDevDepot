@@ -62,7 +62,7 @@ class Login extends Component {
 
   render() {
     return (
-      <Modal title="Login" closeForm={this.cancel}>
+      <Modal title="Login" icon="fas fa-user-lock" closeForm={this.cancel}>
         <form>
           <FocusInput
             name="username"

@@ -53,7 +53,7 @@ function Welcome({ children }) {
               </header>
               <div class="card-content">
                 <p>
-                  This web app was created by Jamie DeLong using the MERN stack:
+                  This web app was created by <strong>Jamie DeLong</strong> using the MERN stack:
                 </p>
                 <br />
                 <span className="icon">
@@ -86,7 +86,7 @@ function Welcome({ children }) {
                 </p>
                 <p class="card-footer-item">
                   <span>
-                    Network with Him on <br/>
+                    Network on <br/>
                     <a href="https://www.linkedin.com/in/jamieldelong" rel="noopener noreferrer" target="_blank">LinkedIn</a>
                   </span>
                 </p>
