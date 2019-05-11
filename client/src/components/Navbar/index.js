@@ -6,10 +6,12 @@ import "./style.css";
 class Navbar extends Component {
   state = {
     menuActive: false
-  }
+  };
 
-  toggleMenu= (event, active) => {
-    active ? this.setState({ menuActive: true }) : this.setState({menuActive: false});
+  toggleMenu = (event, active) => {
+    active
+      ? this.setState({ menuActive: true })
+      : this.setState({ menuActive: false });
   };
 
   handleAdminClick = event => {
@@ -22,20 +24,22 @@ class Navbar extends Component {
 
   handleBurgerClick = event => {
     event.preventDefault();
-    this.state.menuActive ? this.setState({ menuActive: false }) : this.setState({ menuActive: true });
-  }
+    this.state.menuActive
+      ? this.setState({ menuActive: false })
+      : this.setState({ menuActive: true });
+  };
 
   handleContactClick = event => {
     event.preventDefault();
     this.setState({ menuActive: false });
     this.props.showContact();
-  }
+  };
 
   handleLoginClick = event => {
     event.preventDefault();
     this.props.isAuth ? this.props.logout() : this.props.showLogin();
-    this.setState({menuActive: false})
-  }
+    this.setState({ menuActive: false });
+  };
 
   render() {
     return (
@@ -50,7 +54,9 @@ class Navbar extends Component {
           </Link>
           <Link
             onClick={this.handleBurgerClick}
-            className={"navbar-burger " + + (this.state.menuActive ? "is-active" : "")}
+            className={
+              "navbar-burger " + +(this.state.menuActive ? "is-active" : "")
+            }
             to=""
             role="button"
             aria-label="menu"
@@ -63,7 +69,11 @@ class Navbar extends Component {
           </Link>
         </div>
 
-        <div className={"navbar-menu " + (this.state.menuActive ? "is-active" : "")}>
+        <div
+          className={
+            "navbar-menu " + (this.state.menuActive ? "is-active" : "")
+          }
+        >
           <div className="navbar-start">
             {this.props.isAdmin ? (
               <Link
@@ -91,7 +101,7 @@ class Navbar extends Component {
                   </span>
                 </Link>
                 <Link
-                  onClick={() => this.setState({menuActive: false})}
+                  onClick={() => this.setState({ menuActive: false })}
                   className="navbar-item"
                   to="/favorites"
                 >
@@ -111,11 +121,9 @@ class Navbar extends Component {
                   className="button is-info"
                   to=""
                 >
-                  <strong>
-                    {this.props.isAuth
-                      ? "Logout (" + this.props.username + ")"
-                      : "Log in"}
-                  </strong>
+                  {this.props.isAuth
+                    ? "Logout (" + this.props.username.toUpperCase() + ")"
+                    : "Log in"}
                 </Link>
               </div>
             </div>
